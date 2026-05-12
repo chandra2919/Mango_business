@@ -1,12 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Star, Calendar, Leaf, Zap } from "lucide-react";
 import { mangoVarieties } from "@/data/mangoes";
 import { getWhatsAppUrl } from "@/lib/utils";
 import { BRAND } from "@/constants/branding";
 import type { MangoVariety } from "@/types";
+
+/* Soft pastel card top colors per variety */
+const cardTops: Record<string, { from: string; to: string; text: string }> = {
+  banginapalli: { from: "#FDF4E3", to: "#F5E0B0", text: "#7A4F10" },
+  rasalu:       { from: "#F9EFE0", to: "#EDD69A", text: "#7A4510" },
+  alphonso:     { from: "#FDF0E6", to: "#F4CBAB", text: "#7A3E18" },
+  kesar:        { from: "#FDF1EA", to: "#F2C4A0", text: "#7A3A18" },
+  himayat:      { from: "#FAF5E0", to: "#EBD98A", text: "#6A4A08" },
+  mallika:      { from: "#F9EDE0", to: "#E9C898", text: "#6A3E10" },
+};
 
 function SweetnessBar({ level }: { level: number }) {
   return (
@@ -15,21 +25,24 @@ function SweetnessBar({ level }: { level: number }) {
         {Array.from({ length: 10 }).map((_, i) => (
           <div
             key={i}
-            className={`h-2 rounded-full transition-all ${
-              i < level
-                ? "bg-gradient-to-r from-amber-400 to-amber-500 w-3"
-                : "bg-stone-200 w-3"
-            }`}
+            className="h-2 rounded-full"
+            style={{
+              width: "11px",
+              background: i < level
+                ? "linear-gradient(90deg, #B8732A, #D4922A)"
+                : "#EDE5D8",
+            }}
           />
         ))}
       </div>
-      <span className="text-xs text-stone-500 font-medium">{level}/10</span>
+      <span className="text-xs font-medium" style={{ color: "#9A8880" }}>{level}/10</span>
     </div>
   );
 }
 
 function MangoCard({ mango, index }: { mango: MangoVariety; index: number }) {
   const [hovered, setHovered] = useState(false);
+  const top = cardTops[mango.id] ?? cardTops.banginapalli;
 
   const orderUrl = getWhatsAppUrl(
     BRAND.whatsapp,
@@ -38,119 +51,104 @@ function MangoCard({ mango, index }: { mango: MangoVariety; index: number }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 36 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.55, delay: index * 0.08, ease: [0.25, 0.46, 0.45, 0.94] }}
+      transition={{ duration: 0.5, delay: index * 0.07, ease: [0.25, 0.46, 0.45, 0.94] }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      whileHover={{ y: -8 }}
-      className="group relative bg-white rounded-3xl overflow-hidden shadow-card-premium border border-stone-100
-                 hover:shadow-[0_20px_60px_rgba(0,0,0,0.12)] hover:border-amber-200/60 transition-all duration-300 cursor-default"
+      whileHover={{ y: -7 }}
+      className="group rounded-3xl overflow-hidden cursor-default"
+      style={{
+        background: "#FFFFFF",
+        border: "1px solid #EAE2D6",
+        boxShadow: "0 2px 20px rgba(0,0,0,0.06)",
+        transition: "box-shadow 0.3s, border-color 0.3s",
+      }}
     >
-      {/* Card top gradient area */}
+      {/* Card top */}
       <div
-        className="relative h-48 flex items-center justify-center overflow-hidden"
-        style={{
-          background: `linear-gradient(135deg, ${mango.gradientFrom}, ${mango.gradientTo})`,
-        }}
+        className="relative h-44 flex items-center justify-center overflow-hidden"
+        style={{ background: `linear-gradient(145deg, ${top.from}, ${top.to})` }}
       >
-        {/* Glow effect */}
         <motion.div
-          animate={{ scale: hovered ? 1.2 : 1, opacity: hovered ? 0.6 : 0.3 }}
-          transition={{ duration: 0.4 }}
-          className="absolute inset-0"
-          style={{
-            background: `radial-gradient(ellipse at center, ${mango.color}40, transparent 70%)`,
-          }}
-        />
-
-        {/* Featured badge */}
-        {mango.featured && (
-          <div className="absolute top-4 left-4 flex items-center gap-1 px-2.5 py-1 rounded-full
-                          bg-white/80 backdrop-blur-sm text-xs font-bold text-amber-700 border border-amber-300/50">
-            <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
-            Fan Favorite
-          </div>
-        )}
-
-        {/* Emoji */}
-        <motion.div
-          animate={{ scale: hovered ? 1.15 : 1, rotate: hovered ? 8 : 0 }}
-          transition={{ duration: 0.4, ease: "backOut" }}
-          className="text-8xl select-none z-10"
+          animate={{ scale: hovered ? 1.12 : 1, rotate: hovered ? 6 : 0 }}
+          transition={{ duration: 0.35, ease: "backOut" }}
+          className="text-7xl select-none z-10"
         >
           🥭
         </motion.div>
 
-        {/* Origin tag */}
-        <div className="absolute bottom-4 right-4 px-2.5 py-1 rounded-lg bg-black/15 backdrop-blur-sm">
-          <span className="text-xs text-white font-semibold">{mango.origin}</span>
+        {mango.featured && (
+          <div
+            className="absolute top-3 left-3 flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold"
+            style={{ background: "rgba(255,255,255,0.82)", color: top.text, border: "1px solid rgba(0,0,0,0.08)" }}
+          >
+            <Star className="w-3 h-3 fill-current" />
+            Fan Favorite
+          </div>
+        )}
+
+        <div
+          className="absolute bottom-3 right-3 px-2.5 py-1 rounded-lg text-xs font-semibold"
+          style={{ background: "rgba(0,0,0,0.10)", color: "#FFF" }}
+        >
+          {mango.origin}
         </div>
       </div>
 
-      {/* Card Body */}
+      {/* Card body */}
       <div className="p-6">
-        {/* Title row */}
-        <div className="flex items-start justify-between mb-1.5">
-          <h3 className="font-display text-xl font-bold text-stone-900">{mango.name}</h3>
-        </div>
-        <p className="text-amber-600 text-sm font-semibold mb-3">{mango.tagline}</p>
-
-        {/* Description */}
-        <p className="text-stone-500 text-sm leading-relaxed mb-5 line-clamp-3">
+        <h3 className="font-display text-xl font-bold mb-0.5" style={{ color: "#2E2520" }}>{mango.name}</h3>
+        <p className="text-sm font-semibold mb-3" style={{ color: "#B8732A" }}>{mango.tagline}</p>
+        <p className="text-sm leading-relaxed mb-5 line-clamp-3" style={{ color: "#7A6B62" }}>
           {mango.description}
         </p>
 
-        {/* Taste Chips */}
+        {/* Taste chips */}
         <div className="flex flex-wrap gap-1.5 mb-4">
-          {mango.tasteProfile.map((taste) => (
+          {mango.tasteProfile.map((t) => (
             <span
-              key={taste}
-              className="px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200/70 text-amber-700 text-xs font-medium"
+              key={t}
+              className="px-2.5 py-1 rounded-full text-xs font-medium"
+              style={{ background: "#F5EBD8", color: "#8B5218", border: "1px solid #E2C99A" }}
             >
-              {taste}
+              {t}
             </span>
           ))}
         </div>
 
-        {/* Details Grid */}
+        {/* Details */}
         <div className="space-y-2.5 mb-5">
-          {/* Sweetness */}
           <div>
             <div className="flex items-center gap-1.5 mb-1.5">
-              <Zap className="w-3.5 h-3.5 text-amber-500" />
-              <span className="text-xs text-stone-500 font-medium uppercase tracking-wide">Sweetness</span>
+              <Zap className="w-3.5 h-3.5" style={{ color: "#B8732A" }} />
+              <span className="text-xs font-medium uppercase tracking-wide" style={{ color: "#9A8880" }}>Sweetness</span>
             </div>
             <SweetnessBar level={mango.sweetness} />
           </div>
-
-          {/* Texture */}
           <div className="flex items-center gap-2">
-            <Leaf className="w-3.5 h-3.5 text-green-500" />
-            <span className="text-xs text-stone-500">Texture:</span>
-            <span className="text-xs text-stone-700 font-semibold">{mango.texture}</span>
+            <Leaf className="w-3.5 h-3.5" style={{ color: "#5A9A6A" }} />
+            <span className="text-xs" style={{ color: "#9A8880" }}>Texture:</span>
+            <span className="text-xs font-semibold" style={{ color: "#3A2E28" }}>{mango.texture}</span>
           </div>
-
-          {/* Availability */}
           <div className="flex items-center gap-2">
-            <Calendar className="w-3.5 h-3.5 text-blue-500" />
-            <span className="text-xs text-stone-500">Season:</span>
-            <span className="text-xs text-stone-700 font-semibold">{mango.availability}</span>
+            <Calendar className="w-3.5 h-3.5" style={{ color: "#5A7AAA" }} />
+            <span className="text-xs" style={{ color: "#9A8880" }}>Season:</span>
+            <span className="text-xs font-semibold" style={{ color: "#3A2E28" }}>{mango.availability}</span>
           </div>
         </div>
 
         {/* CTA */}
         <motion.a
           href={orderUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.97 }}
-          className="flex items-center justify-center gap-2 w-full py-3 rounded-xl
-                     bg-gradient-to-r from-amber-500 to-amber-600 text-white text-sm font-semibold
-                     shadow-[0_4px_14px_rgba(245,158,11,0.35)] hover:shadow-[0_6px_20px_rgba(245,158,11,0.5)]
-                     transition-all duration-200"
+          target="_blank" rel="noopener noreferrer"
+          whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
+          className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-white text-sm font-semibold"
+          style={{
+            background: "linear-gradient(135deg, #B8732A, #9E621F)",
+            boxShadow: "0 3px 14px rgba(184,115,42,0.28)",
+          }}
         >
           Order {mango.name}
         </motion.a>
@@ -161,20 +159,17 @@ function MangoCard({ mango, index }: { mango: MangoVariety; index: number }) {
 
 export function MangoVarieties() {
   return (
-    <section id="varieties" className="py-24 md:py-32 bg-cream-100">
+    <section id="varieties" className="py-24 md:py-32" style={{ background: "#FAF7F2" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.55 }}
           className="text-center mb-16"
         >
-          <span className="badge-premium mb-4 inline-flex">
-            <span>🥭</span> Premium Varieties
-          </span>
-          <h2 className="heading-section text-stone-900 mb-4">
+          <span className="badge-premium mb-4 inline-flex">🥭 Premium Varieties</span>
+          <h2 className="heading-section mb-4" style={{ color: "#2E2520" }}>
             Six Legendary{" "}
             <span className="mango-gradient-text">Indian Mangoes</span>
           </h2>
@@ -184,34 +179,31 @@ export function MangoVarieties() {
           </p>
         </motion.div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
-          {mangoVarieties.map((mango, i) => (
-            <MangoCard key={mango.id} mango={mango} index={i} />
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {mangoVarieties.map((m, i) => <MangoCard key={m.id} mango={m} index={i} />)}
         </div>
 
-        {/* Bottom CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
           className="text-center mt-14"
         >
-          <p className="text-stone-500 text-sm mb-4">
+          <p className="text-sm mb-4" style={{ color: "#9A8880" }}>
             Not sure which to choose? Let us help you pick the perfect variety.
           </p>
           <motion.a
-            href={getWhatsAppUrl(BRAND.whatsapp, "Hi! I need help choosing the right mango variety for my family. Can you help?")}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.03, y: -1 }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full
-                       bg-white border border-amber-300 text-amber-700 font-semibold text-sm
-                       shadow-card-premium hover:bg-amber-50 hover:shadow-[0_6px_24px_rgba(245,158,11,0.15)]
-                       transition-all duration-200"
+            href={getWhatsAppUrl(BRAND.whatsapp, "Hi! I need help choosing the right mango variety. Can you help?")}
+            target="_blank" rel="noopener noreferrer"
+            whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }}
+            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full text-sm font-semibold"
+            style={{
+              background: "#FFFFFF",
+              color: "#8B5218",
+              border: "1px solid #E2C99A",
+              boxShadow: "0 2px 14px rgba(0,0,0,0.07)",
+            }}
           >
             💬 Ask Us on WhatsApp
           </motion.a>

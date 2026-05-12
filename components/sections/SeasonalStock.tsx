@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { AlertTriangle, TrendingUp, Calendar } from "lucide-react";
+import { TrendingUp, Calendar } from "lucide-react";
 import { CountdownTimer } from "@/components/ui/CountdownTimer";
 import { BRAND } from "@/constants/branding";
 import { getWhatsAppUrl } from "@/lib/utils";
@@ -27,126 +27,124 @@ const urgencyPoints = [
 export function SeasonalStock() {
   const whatsappUrl = getWhatsAppUrl(
     BRAND.whatsapp,
-    "Hi MangoRoots! I'd like to place a weekend pre-order before stock runs out. Please share details."
+    "Hi MangoRoots! I'd like to place a weekend pre-order. Please share details."
   );
 
   return (
-    <section id="seasonal" className="relative py-24 md:py-32 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0"
-           style={{
-             background: "linear-gradient(135deg, #92400E 0%, #B45309 30%, #D97706 60%, #F59E0B 100%)"
-           }} />
-
-      {/* Pattern overlay */}
-      <div className="absolute inset-0 opacity-10"
-           style={{
-             backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
-             backgroundSize: "30px 30px"
-           }} />
-
-      {/* Glow */}
-      <div className="absolute inset-0 pointer-events-none"
-           style={{
-             background: "radial-gradient(ellipse 70% 50% at 50% 50%, rgba(255,255,255,0.08) 0%, transparent 70%)"
-           }} />
+    /* Warm earthy medium tone — readable but not harsh */
+    <section
+      id="seasonal"
+      className="relative py-24 md:py-32 overflow-hidden"
+      style={{ background: "linear-gradient(145deg, #6B3F18 0%, #8B5220 40%, #A86A28 100%)" }}
+    >
+      {/* Subtle dot pattern */}
+      <div
+        className="absolute inset-0 opacity-10 pointer-events-none"
+        style={{
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.6) 1px, transparent 0)",
+          backgroundSize: "28px 28px",
+        }}
+      />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.55 }}
           className="text-center mb-14"
         >
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm
-                          border border-white/30 text-white text-sm font-semibold mb-6">
-            <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+          <div
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-6"
+            style={{ background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)", color: "#FAF0DC" }}
+          >
+            <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#FAD090" }} />
             ⚠️ Limited Seasonal Availability
           </div>
 
-          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-5 leading-tight">
-            Season Ends
-            <br />
-            <span className="text-yellow-200">In August.</span>
+          <h2
+            className="font-display font-bold leading-tight mb-5"
+            style={{ fontSize: "clamp(2.2rem, 5vw, 3.8rem)", color: "#FDF6EC" }}
+          >
+            Season Ends <br />
+            <span style={{ color: "#FAD090" }}>In August.</span>
           </h2>
-          <p className="text-white/80 text-lg max-w-xl mx-auto leading-relaxed">
+          <p className="text-lg max-w-xl mx-auto leading-relaxed" style={{ color: "rgba(253,246,236,0.80)" }}>
             These mangoes grow for only 3 months a year. After August, they&rsquo;re gone until
             next summer. Don&rsquo;t miss your window.
           </p>
         </motion.div>
 
-        {/* Countdown Timer */}
+        {/* Countdown */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.92 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.55, delay: 0.2 }}
           className="flex flex-col items-center mb-16"
         >
-          <p className="text-white/60 text-sm font-medium mb-4 uppercase tracking-widest">
+          <p className="text-xs font-medium mb-4 uppercase tracking-widest" style={{ color: "rgba(253,246,236,0.55)" }}>
             Next Weekend Fresh Stock In
           </p>
           <CountdownTimer />
         </motion.div>
 
-        {/* Urgency Points */}
+        {/* Points */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-14">
-          {urgencyPoints.map((point, i) => (
+          {urgencyPoints.map((p, i) => (
             <motion.div
-              key={point.title}
-              initial={{ opacity: 0, y: 30 }}
+              key={p.title}
+              initial={{ opacity: 0, y: 26 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
+              transition={{ delay: i * 0.1, duration: 0.45 }}
+              className="rounded-2xl p-6"
+              style={{ background: "rgba(255,255,255,0.10)", border: "1px solid rgba(255,255,255,0.18)" }}
             >
-              <span className="text-3xl mb-4 block">{point.emoji}</span>
-              <h3 className="font-display font-bold text-white text-base mb-2">{point.title}</h3>
-              <p className="text-white/65 text-sm leading-relaxed">{point.description}</p>
+              <span className="text-3xl mb-4 block">{p.emoji}</span>
+              <h3 className="font-display font-bold text-base mb-2" style={{ color: "#FDF6EC" }}>{p.title}</h3>
+              <p className="text-sm leading-relaxed" style={{ color: "rgba(253,246,236,0.68)" }}>{p.description}</p>
             </motion.div>
           ))}
         </div>
 
-        {/* Stock indicator */}
+        {/* Stock bar */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
-          className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 mb-10 max-w-2xl mx-auto"
+          className="rounded-2xl p-6 mb-10 max-w-2xl mx-auto"
+          style={{ background: "rgba(255,255,255,0.10)", border: "1px solid rgba(255,255,255,0.18)" }}
         >
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-yellow-300" />
-              <span className="text-white font-semibold text-sm">This Weekend&rsquo;s Availability</span>
+              <TrendingUp className="w-4 h-4" style={{ color: "#FAD090" }} />
+              <span className="font-semibold text-sm" style={{ color: "#FDF6EC" }}>This Weekend&rsquo;s Availability</span>
             </div>
-            <span className="text-yellow-200 text-sm font-bold">Filling Fast</span>
+            <span className="text-sm font-bold" style={{ color: "#FAD090" }}>Filling Fast</span>
           </div>
-
-          {/* Progress bar */}
-          <div className="h-3 bg-white/20 rounded-full overflow-hidden mb-2">
+          <div className="h-3 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.15)" }}>
             <motion.div
               initial={{ width: 0 }}
               whileInView={{ width: "72%" }}
               viewport={{ once: true }}
               transition={{ delay: 0.5, duration: 1.2, ease: "easeOut" }}
-              className="h-full rounded-full bg-gradient-to-r from-yellow-300 to-amber-400"
+              className="h-full rounded-full"
+              style={{ background: "linear-gradient(90deg, #D4922A, #FAD090)" }}
             />
           </div>
-
-          <div className="flex justify-between text-white/60 text-xs">
+          <div className="flex justify-between text-xs mt-2" style={{ color: "rgba(253,246,236,0.50)" }}>
             <span>0 boxes</span>
-            <span className="text-yellow-200 font-medium">72% pre-ordered this week</span>
+            <span className="font-medium" style={{ color: "#FAD090" }}>72% pre-ordered</span>
             <span>Weekend max</span>
           </div>
         </motion.div>
 
         {/* CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
@@ -154,19 +152,21 @@ export function SeasonalStock() {
         >
           <motion.a
             href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.04, y: -2 }}
-            whileTap={{ scale: 0.97 }}
-            className="flex items-center gap-2.5 px-8 py-4 rounded-full bg-white text-amber-700 text-base font-bold
-                       shadow-[0_8px_30px_rgba(0,0,0,0.2)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.25)]
-                       transition-all duration-200 w-full sm:w-auto justify-center"
+            target="_blank" rel="noopener noreferrer"
+            whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}
+            className="flex items-center justify-center gap-2.5 px-8 py-4 rounded-full text-base font-bold
+                       w-full sm:w-auto"
+            style={{
+              background: "#FAF0DC",
+              color: "#7A4510",
+              boxShadow: "0 6px 24px rgba(0,0,0,0.2)",
+            }}
           >
             🛒 Pre-Order This Weekend
           </motion.a>
-          <div className="flex items-center gap-2 text-white/60 text-sm">
+          <div className="flex items-center gap-2 text-sm" style={{ color: "rgba(253,246,236,0.60)" }}>
             <Calendar className="w-4 h-4" />
-            <span>Season: May – August 2025</span>
+            Season: May – August 2025
           </div>
         </motion.div>
       </div>

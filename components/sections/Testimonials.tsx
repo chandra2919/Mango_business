@@ -9,146 +9,113 @@ function StarRating({ rating }: { rating: number }) {
   return (
     <div className="flex items-center gap-0.5">
       {Array.from({ length: 5 }).map((_, i) => (
-        <Star
-          key={i}
-          className={`w-4 h-4 ${i < rating ? "fill-amber-400 text-amber-400" : "text-stone-300"}`}
-        />
+        <Star key={i} className="w-3.5 h-3.5"
+          style={{ fill: i < rating ? "#D4922A" : "none", color: i < rating ? "#D4922A" : "#D0C8C0" }} />
       ))}
     </div>
   );
 }
 
-function AvatarInitials({ initials, gradient }: { initials: string; gradient: string }) {
-  return (
-    <div
-      className={`w-11 h-11 rounded-full ${gradient} flex items-center justify-center shrink-0`}
-    >
-      <span className="text-white font-bold text-sm">{initials}</span>
-    </div>
-  );
-}
-
-const gradients = [
-  "bg-gradient-to-br from-amber-400 to-orange-500",
-  "bg-gradient-to-br from-rose-400 to-pink-500",
-  "bg-gradient-to-br from-violet-400 to-purple-500",
-  "bg-gradient-to-br from-emerald-400 to-teal-500",
-  "bg-gradient-to-br from-blue-400 to-indigo-500",
-  "bg-gradient-to-br from-amber-500 to-yellow-600",
-  "bg-gradient-to-br from-red-400 to-rose-500",
-  "bg-gradient-to-br from-teal-400 to-cyan-500",
+const avatarGrads = [
+  "linear-gradient(135deg,#C8832A,#E0A840)",
+  "linear-gradient(135deg,#A05070,#C87890)",
+  "linear-gradient(135deg,#6060B0,#8080C8)",
+  "linear-gradient(135deg,#3A8A60,#5AAA80)",
+  "linear-gradient(135deg,#4060A8,#6080C0)",
+  "linear-gradient(135deg,#B07020,#D09040)",
+  "linear-gradient(135deg,#903040,#B05060)",
+  "linear-gradient(135deg,#308888,#50A8A8)",
 ];
 
 export function Testimonials() {
   const [current, setCurrent] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const intervalRef = useRef<ReturnType<typeof setInterval>>();
-
+  const [autoPlay, setAutoPlay] = useState(true);
   const total = testimonials.length;
 
-  const prev = () => {
-    setCurrent((c) => (c - 1 + total) % total);
-    setIsAutoPlaying(false);
-  };
-
-  const next = () => {
-    setCurrent((c) => (c + 1) % total);
-    setIsAutoPlaying(false);
-  };
+  const prev = () => { setCurrent(c => (c - 1 + total) % total); setAutoPlay(false); };
+  const next = () => { setCurrent(c => (c + 1) % total); setAutoPlay(false); };
 
   useEffect(() => {
-    if (!isAutoPlaying) return;
-    intervalRef.current = setInterval(() => {
-      setCurrent((c) => (c + 1) % total);
-    }, 4500);
-    return () => clearInterval(intervalRef.current);
-  }, [isAutoPlaying, total]);
+    if (!autoPlay) return;
+    const id = setInterval(() => setCurrent(c => (c + 1) % total), 4500);
+    return () => clearInterval(id);
+  }, [autoPlay, total]);
 
-  // Visible set of 3 testimonials
-  const getVisible = () => {
-    return [
-      testimonials[current % total],
-      testimonials[(current + 1) % total],
-      testimonials[(current + 2) % total],
-    ];
-  };
+  const visible = [
+    testimonials[current % total],
+    testimonials[(current + 1) % total],
+    testimonials[(current + 2) % total],
+  ];
 
   return (
-    <section id="testimonials" className="py-24 md:py-32 bg-stone-900 overflow-hidden">
-      {/* Background pattern */}
-      <div className="absolute inset-0 pointer-events-none opacity-5"
-           style={{
-             backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)",
-             backgroundSize: "40px 40px"
-           }} />
+    /* Soft warm cream background — not dark */
+    <section id="testimonials" className="py-24 md:py-32 overflow-hidden"
+      style={{ background: "linear-gradient(160deg, #F4EFE6 0%, #EDE5D8 100%)" }}>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        {/* Header */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.55 }}
           className="text-center mb-16"
         >
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold
-                           bg-amber-500/20 text-amber-300 border border-amber-500/30 mb-4">
-            <span>💬</span> Real Reviews
-          </span>
-          <h2 className="heading-section text-white mb-4">
+          <span className="badge-premium mb-4 inline-flex">💬 Real Reviews</span>
+          <h2 className="heading-section mb-4" style={{ color: "#2E2520" }}>
             What Our{" "}
-            <span className="bg-gradient-to-r from-amber-400 to-yellow-300 bg-clip-text text-transparent">
-              Customers Say
-            </span>
+            <span className="mango-gradient-text">Customers Say</span>
           </h2>
-          <p className="text-stone-400 text-lg max-w-xl mx-auto">
+          <p className="text-body text-lg max-w-xl mx-auto">
             Real families, real emotions, real Indian mangoes.
           </p>
         </motion.div>
 
-        {/* Testimonial Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        {/* Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
           <AnimatePresence mode="popLayout">
-            {getVisible().map((testimonial, i) => (
+            {visible.map((t, i) => (
               <motion.div
-                key={`${testimonial.id}-${current}-${i}`}
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                key={`${t.id}-${current}-${i}`}
+                initial={{ opacity: 0, y: 18, scale: 0.96 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                transition={{ duration: 0.4, delay: i * 0.06 }}
-                className={`relative rounded-2xl p-7 border transition-all ${
-                  i === 0
-                    ? "bg-gradient-to-br from-amber-500/20 to-orange-500/10 border-amber-500/30"
-                    : "bg-white/5 border-white/10"
-                }`}
+                exit={{ opacity: 0, y: -18, scale: 0.96 }}
+                transition={{ duration: 0.38, delay: i * 0.06 }}
+                className="rounded-2xl p-7"
+                style={{
+                  background: i === 0 ? "#FFFFFF" : "rgba(255,255,255,0.70)",
+                  border: "1px solid #E8DDD0",
+                  boxShadow: i === 0 ? "0 4px 24px rgba(184,115,42,0.10)" : "0 2px 12px rgba(0,0,0,0.05)",
+                }}
               >
                 {/* Quote icon */}
-                <Quote className="w-8 h-8 text-amber-500/40 mb-4" />
+                <Quote className="w-7 h-7 mb-4" style={{ color: "#D4B896" }} />
 
-                {/* Review text */}
-                <p className="text-stone-300 text-sm leading-relaxed mb-6">
-                  &ldquo;{testimonial.review}&rdquo;
+                <p className="text-sm leading-relaxed mb-5" style={{ color: "#5A4A42" }}>
+                  &ldquo;{t.review}&rdquo;
                 </p>
 
-                {/* Variety badge */}
-                {testimonial.variety && (
-                  <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full
-                                  bg-amber-500/15 border border-amber-500/25 text-amber-400 text-xs font-medium mb-4">
-                    🥭 {testimonial.variety}
+                {t.variety && (
+                  <div
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium mb-4"
+                    style={{ background: "#F5EBD8", color: "#8B5218", border: "1px solid #E2C99A" }}
+                  >
+                    🥭 {t.variety}
                   </div>
                 )}
 
-                {/* Stars + Author */}
                 <div className="flex items-center gap-3">
-                  <AvatarInitials
-                    initials={testimonial.initials}
-                    gradient={gradients[parseInt(testimonial.id) - 1] || gradients[0]}
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-white font-semibold text-sm truncate">{testimonial.name}</p>
-                    <p className="text-stone-500 text-xs">{testimonial.location}</p>
+                  {/* Avatar */}
+                  <div
+                    className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+                    style={{ background: avatarGrads[parseInt(t.id) - 1] ?? avatarGrads[0] }}
+                  >
+                    <span className="text-white font-bold text-xs">{t.initials}</span>
                   </div>
-                  <StarRating rating={testimonial.rating} />
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-sm truncate" style={{ color: "#2E2520" }}>{t.name}</p>
+                    <p className="text-xs" style={{ color: "#9A8880" }}>{t.location}</p>
+                  </div>
+                  <StarRating rating={t.rating} />
                 </div>
               </motion.div>
             ))}
@@ -157,38 +124,32 @@ export function Testimonials() {
 
         {/* Navigation */}
         <div className="flex items-center justify-center gap-6">
-          <button
-            onClick={prev}
-            className="w-10 h-10 rounded-full bg-white/10 hover:bg-amber-500/30 border border-white/15
-                       hover:border-amber-500/40 flex items-center justify-center transition-all duration-200"
-            aria-label="Previous"
-          >
-            <ChevronLeft className="w-5 h-5 text-white" />
+          <button onClick={prev} aria-label="Previous"
+            className="w-10 h-10 rounded-full flex items-center justify-center transition-all"
+            style={{ background: "rgba(255,255,255,0.7)", border: "1px solid #E0D4C4" }}>
+            <ChevronLeft className="w-5 h-5" style={{ color: "#7A6B62" }} />
           </button>
 
-          {/* Dots */}
           <div className="flex items-center gap-1.5">
             {testimonials.map((_, i) => (
               <button
                 key={i}
-                onClick={() => { setCurrent(i); setIsAutoPlaying(false); }}
-                className={`rounded-full transition-all duration-300 ${
-                  i === current
-                    ? "w-6 h-2 bg-amber-400"
-                    : "w-2 h-2 bg-white/25 hover:bg-white/50"
-                }`}
-                aria-label={`Go to ${i + 1}`}
+                onClick={() => { setCurrent(i); setAutoPlay(false); }}
+                aria-label={`Slide ${i + 1}`}
+                className="rounded-full transition-all duration-300"
+                style={{
+                  width: i === current ? "24px" : "8px",
+                  height: "8px",
+                  background: i === current ? "#B8732A" : "#D4C4B8",
+                }}
               />
             ))}
           </div>
 
-          <button
-            onClick={next}
-            className="w-10 h-10 rounded-full bg-white/10 hover:bg-amber-500/30 border border-white/15
-                       hover:border-amber-500/40 flex items-center justify-center transition-all duration-200"
-            aria-label="Next"
-          >
-            <ChevronRight className="w-5 h-5 text-white" />
+          <button onClick={next} aria-label="Next"
+            className="w-10 h-10 rounded-full flex items-center justify-center transition-all"
+            style={{ background: "rgba(255,255,255,0.7)", border: "1px solid #E0D4C4" }}>
+            <ChevronRight className="w-5 h-5" style={{ color: "#7A6B62" }} />
           </button>
         </div>
       </div>
