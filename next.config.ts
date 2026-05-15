@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "plus.unsplash.com"   },
     ],
   },
+  devIndicators: false,
   experimental: {
     optimizeCss: true,
   },
