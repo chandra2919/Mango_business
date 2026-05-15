@@ -268,62 +268,71 @@ export function ChatWidget() {
               width: "clamp(320px, 90vw, 380px)",
               height: "clamp(460px, 70vh, 520px)",
               borderRadius: "22px",
-              background: "#FFFFFF",
-              border: "1.5px solid #F0EDE6",
+              background: "#FFFDF7",
+              border: "1.5px solid #F7C873",
               boxShadow:
-                "0 24px 64px rgba(0,0,0,0.14), 0 8px 24px rgba(0,0,0,0.08)",
+                "0 20px 60px rgba(0,0,0,0.10), 0 6px 20px rgba(247,200,115,0.12)",
               overflow: "hidden",
             }}
           >
-            {/* ── Header ─────────────────────────────── */}
+            {/* ── Header — warm ivory, matches site palette ── */}
             <div
               className="flex items-center justify-between px-5 py-4 flex-shrink-0"
               style={{
-                background: "linear-gradient(135deg, #2D6A4F 0%, #1E4D38 100%)",
+                background: "#FFFDF7",
+                borderBottom: "1.5px solid #F7C873",
               }}
             >
               <div className="flex items-center gap-3">
-                {/* Avatar */}
+                {/* Avatar — soft green circle */}
                 <div
                   className="flex items-center justify-center flex-shrink-0"
                   style={{
-                    width: 38,
-                    height: 38,
+                    width: 40,
+                    height: 40,
                     borderRadius: "50%",
-                    background: "rgba(255,255,255,0.15)",
-                    border: "1.5px solid rgba(255,255,255,0.25)",
+                    background: "#E9F5EC",
+                    border: "1.5px solid #B7DEC8",
                   }}
                 >
-                  <span style={{ fontSize: "1rem" }}>
-                    {/* CSS leaf shape — no emoji */}
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                      <path
-                        d="M9 2C5 2 2 6 2 9c0 3.5 2.5 7 7 7s7-3.5 7-7C16 5.5 13.5 2 9 2z"
-                        fill="rgba(255,255,255,0.9)"
-                      />
-                      <line x1="9" y1="9" x2="9" y2="16" stroke="#2D6A4F" strokeWidth="1.5" strokeLinecap="round" />
-                    </svg>
-                  </span>
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path
+                      d="M9 2C5 2 2 6 2 9c0 3.5 2.5 7 7 7s7-3.5 7-7C16 5.5 13.5 2 9 2z"
+                      fill="#2D6A4F"
+                    />
+                    <line x1="9" y1="9" x2="9" y2="16" stroke="#E9F5EC" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
                 </div>
+
                 <div>
                   <p
-                    className="font-bold text-white leading-tight"
-                    style={{ fontFamily: "var(--font-poppins)", fontSize: "0.88rem" }}
+                    className="font-bold leading-tight"
+                    style={{
+                      fontFamily: "var(--font-poppins)",
+                      fontSize: "0.88rem",
+                      color: "#1A1A1A",
+                    }}
                   >
                     MangoRoots Assistant
                   </p>
                   <div className="flex items-center gap-1.5 mt-0.5">
                     <span
                       style={{
-                        width: 6,
-                        height: 6,
+                        width: 7,
+                        height: 7,
                         borderRadius: "50%",
-                        background: "#4ADE80",
+                        background: "#22C55E",
                         display: "inline-block",
-                        boxShadow: "0 0 0 2px rgba(74,222,128,0.3)",
+                        boxShadow: "0 0 0 2.5px rgba(34,197,94,0.20)",
                       }}
                     />
-                    <span style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.75)" }}>
+                    <span
+                      style={{
+                        fontSize: "0.7rem",
+                        color: "#7A7A7A",
+                        fontFamily: "var(--font-inter)",
+                      }}
+                    >
                       Online — typically replies instantly
                     </span>
                   </div>
@@ -338,12 +347,18 @@ export function ChatWidget() {
                 style={{
                   width: 30,
                   height: 30,
-                  background: "rgba(255,255,255,0.12)",
-                  border: "1px solid rgba(255,255,255,0.20)",
-                  color: "#FFFFFF",
+                  background: "#F0EDE6",
+                  border: "1px solid #E0D8CC",
+                  color: "#4A4A4A",
                 }}
-                onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.22)")}
-                onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.12)")}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLButtonElement).style.background = "#FFE8B6";
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = "#F7C873";
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLButtonElement).style.background = "#F0EDE6";
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = "#E0D8CC";
+                }}
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -352,7 +367,7 @@ export function ChatWidget() {
             {/* ── Messages ───────────────────────────── */}
             <div
               className="flex-1 overflow-y-auto px-4 py-4 space-y-3"
-              style={{ background: "#FAFAF8" }}
+              style={{ background: "#FFFDF7" }}
             >
               {messages.map(msg => (
                 <div
@@ -367,18 +382,14 @@ export function ChatWidget() {
                         msg.from === "user"
                           ? "18px 18px 4px 18px"
                           : "18px 18px 18px 4px",
-                      background:
-                        msg.from === "user"
-                          ? "linear-gradient(135deg, #2D6A4F, #1E4D38)"
-                          : "#FFFFFF",
-                      border:
-                        msg.from === "user"
-                          ? "none"
-                          : "1px solid #F0EDE6",
+                      /* User: fresh green (matches WhatsApp btn in site)
+                         Bot: clean white with warm border             */
+                      background: msg.from === "user" ? "#25D366" : "#FFFFFF",
+                      border: msg.from === "user" ? "none" : "1px solid #F0EDE6",
                       boxShadow:
                         msg.from === "user"
-                          ? "0 2px 10px rgba(45,106,79,0.25)"
-                          : "0 1px 8px rgba(0,0,0,0.05)",
+                          ? "0 2px 12px rgba(37,211,102,0.22)"
+                          : "0 1px 6px rgba(0,0,0,0.05)",
                     }}
                   >
                     <p
@@ -393,20 +404,29 @@ export function ChatWidget() {
                       {msg.text}
                     </p>
 
-                    {/* CTA link button inside bubble */}
+                    {/* CTA link — styled like site's btn-green (outline) */}
                     {msg.link && (
                       <a
                         href={msg.link.href}
                         target={msg.link.external ? "_blank" : "_self"}
                         rel={msg.link.external ? "noopener noreferrer" : undefined}
-                        className="flex items-center justify-center gap-1.5 mt-2.5 rounded-lg font-semibold transition-all duration-200"
+                        className="flex items-center justify-center gap-1.5 mt-2.5 font-semibold transition-all duration-200"
                         style={{
-                          padding: "0.45rem 0.85rem",
-                          background: msg.from === "user" ? "rgba(255,255,255,0.18)" : "#2D6A4F",
+                          padding: "0.45rem 0.9rem",
+                          borderRadius: "10px",
+                          background: msg.from === "user"
+                            ? "rgba(255,255,255,0.22)"
+                            : "#2D6A4F",
                           color: "#FFFFFF",
-                          fontSize: "0.75rem",
+                          fontSize: "0.74rem",
                           fontFamily: "var(--font-poppins)",
-                          border: msg.from === "user" ? "1px solid rgba(255,255,255,0.30)" : "none",
+                          border: msg.from === "user"
+                            ? "1px solid rgba(255,255,255,0.35)"
+                            : "none",
+                          boxShadow: msg.from === "bot"
+                            ? "0 2px 8px rgba(45,106,79,0.22)"
+                            : "none",
+                          textDecoration: "none",
                         }}
                       >
                         <MessageCircle className="w-3 h-3" />
@@ -418,30 +438,31 @@ export function ChatWidget() {
                   {/* Timestamp */}
                   <span
                     className="mt-1 px-1"
-                    style={{ fontSize: "0.64rem", color: "#AAAAAA" }}
+                    style={{ fontSize: "0.63rem", color: "#C0BAB2" }}
                   >
                     {formatTime(msg.time)}
                   </span>
 
-                  {/* Quick-reply chips */}
+                  {/* Quick-reply chips — warm gold outline, cream hover */}
                   {msg.chips && msg.chips.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 mt-2 max-w-full">
                       {msg.chips.map(chip => (
                         <button
                           key={chip}
                           onClick={() => handleChip(chip)}
-                          className="transition-all duration-200"
                           style={{
-                            padding: "0.3rem 0.75rem",
+                            padding: "0.28rem 0.75rem",
                             borderRadius: "999px",
                             border: "1.5px solid #F7C873",
                             background: "#FFFFFF",
                             color: "#7A4E1D",
-                            fontSize: "0.72rem",
+                            fontSize: "0.71rem",
                             fontWeight: 600,
                             fontFamily: "var(--font-poppins)",
                             cursor: "pointer",
                             whiteSpace: "nowrap",
+                            transition: "background 0.18s, border-color 0.18s",
+                            boxShadow: "0 1px 4px rgba(247,200,115,0.18)",
                           }}
                           onMouseEnter={e => {
                             (e.currentTarget as HTMLButtonElement).style.background = "#FFF8EC";
@@ -512,7 +533,7 @@ export function ChatWidget() {
               className="flex items-center gap-2 px-3 py-3 flex-shrink-0"
               style={{
                 borderTop: "1px solid #F0EDE6",
-                background: "#FFFFFF",
+                background: "#FFFDF7",
               }}
             >
               <input
@@ -521,19 +542,25 @@ export function ChatWidget() {
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 placeholder="Type a message…"
-                className="flex-1 outline-none bg-transparent"
+                className="flex-1 outline-none"
                 style={{
                   fontSize: "0.83rem",
                   color: "#1A1A1A",
                   fontFamily: "var(--font-inter)",
-                  padding: "0.55rem 0.85rem",
+                  padding: "0.55rem 1rem",
                   borderRadius: "999px",
                   border: "1.5px solid #F0EDE6",
-                  background: "#FAFAF8",
-                  transition: "border-color 0.2s",
+                  background: "#FFFFFF",
+                  transition: "border-color 0.2s, box-shadow 0.2s",
                 }}
-                onFocus={e => (e.currentTarget.style.borderColor = "#F7C873")}
-                onBlur={e => (e.currentTarget.style.borderColor = "#F0EDE6")}
+                onFocus={e => {
+                  e.currentTarget.style.borderColor = "#F7C873";
+                  e.currentTarget.style.boxShadow = "0 0 0 3px rgba(247,200,115,0.18)";
+                }}
+                onBlur={e => {
+                  e.currentTarget.style.borderColor = "#F0EDE6";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
               />
               <button
                 type="submit"
@@ -544,10 +571,10 @@ export function ChatWidget() {
                   width: 38,
                   height: 38,
                   borderRadius: "50%",
-                  background: input.trim() ? "#2D6A4F" : "#E8E4DE",
+                  background: input.trim() ? "#25D366" : "#E8E4DE",
                   border: "none",
                   cursor: input.trim() ? "pointer" : "default",
-                  boxShadow: input.trim() ? "0 2px 10px rgba(45,106,79,0.30)" : "none",
+                  boxShadow: input.trim() ? "0 2px 10px rgba(37,211,102,0.30)" : "none",
                 }}
               >
                 <Send
@@ -562,10 +589,10 @@ export function ChatWidget() {
               className="text-center py-2 flex-shrink-0"
               style={{
                 fontSize: "0.62rem",
-                color: "#BBBBBB",
+                color: "#C0BAB2",
                 fontFamily: "var(--font-inter)",
-                borderTop: "1px solid #F8F5F0",
-                background: "#FFFFFF",
+                borderTop: "1px solid #F0EDE6",
+                background: "#FFFDF7",
               }}
             >
               Powered by MangoRoots · For complex queries,{" "}
