@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -68,9 +69,30 @@ export function WhyChooseUs() {
     <section
       id="why-us"
       className="sec"
-      style={{ background: "#FFFFFF", borderTop: "1px solid #F0F0F0" }}
+      style={{ position: "relative", background: "#FFFFFF", borderTop: "1px solid #F0F0F0", overflow: "hidden" }}
     >
-      <div className="page-wrap">
+      {/* ── Background image — very subtle texture/depth layer ── */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
+        <Image
+          src="/images/cover5_div4.jpg"
+          alt=""
+          fill
+          priority={false}
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+        {/* Warm ivory overlay — keeps cards fully readable, image just adds warmth */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(160deg, rgba(255,253,247,0.93) 0%, rgba(255,248,236,0.90) 50%, rgba(255,253,247,0.94) 100%)",
+          }}
+        />
+      </div>
+
+      <div className="page-wrap" style={{ position: "relative", zIndex: 1 }}>
 
         {/* Section header */}
         <motion.div

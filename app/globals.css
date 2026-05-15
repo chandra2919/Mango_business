@@ -379,6 +379,20 @@
   border-radius: 2px;
 }
 
+/* ── Mango card image zoom-out on card hover ─────────── */
+/*
+   Triggered by parent .mango-slide-card hover — NOT onMouseEnter on
+   the img. This survives the overlay div sitting above the image.
+*/
+.mango-card-img {
+  transform: scale(1.06);   /* start slightly zoomed IN for a crop */
+  transition: transform 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+.mango-slide-card:hover .mango-card-img {
+  transform: scale(0.94);   /* zoom OUT on hover — clear, dramatic pull-back */
+}
+
 /* ── Scroll-from-side image reveal ──────────────────── */
 /* Applied via Framer Motion in component (x: ±60 → 0)  */
 

@@ -57,46 +57,62 @@ function MangoCard({ mango, index }: { mango: MangoVariety; index: number }) {
         className="mango-slide-card card-lift flex flex-col rounded-2xl group"
         style={{ border: `1.5px solid ${top.border}`, background: "#FFFFFF" }}
       >
-        {/* ── slide1: IMAGE PANEL ── translateY(40px) → 0 on hover */}
+        {/* ── slide1: IMAGE PANEL ── translateY(36px) → 0 on hover */}
         <div className="ms1">
           <div className="relative w-full h-52 overflow-hidden rounded-t-2xl">
-            {/* Zoom-out on hover: scale(1) → scale(0.91) with smooth ease */}
+
+            {/*
+              zoom-out driven by CSS class .mango-card-img
+              Parent .mango-slide-card:hover triggers scale(1.06)→scale(0.94)
+              No JS onMouseEnter/Leave needed — overlay can't block it
+            */}
             <Image
               src={imgSrc}
               alt={mango.name}
               fill
-              className="object-cover"
-              style={{
-                transform: "scale(1)",
-                transition: "transform 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.transform = "scale(0.91)"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform = "scale(1)"; }}
+              priority={index < 3}
+              className="object-cover object-center mango-card-img"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             />
 
-            {/* Featured badge */}
+            {/* Featured badge — CSS dot, no emoji */}
             {mango.featured && (
-              <span className="absolute top-3 left-3 tag-gold text-xs z-10">⭐ Popular</span>
+              <span
+                className="absolute top-3 left-3 z-10 flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full"
+                style={{
+                  background: "rgba(255,248,236,0.95)",
+                  color: "#7A4E1D",
+                  border: "1px solid #F7C873",
+                  backdropFilter: "blur(4px)",
+                }}
+              >
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#F4A300", display: "inline-block", flexShrink: 0 }} />
+                Popular
+              </span>
             )}
 
             {/* Origin tag */}
             <span
               className="absolute bottom-3 right-3 text-xs font-medium px-2.5 py-1 rounded-full z-10"
-              style={{ background: "rgba(255,255,255,0.92)", color: "#555555", backdropFilter: "blur(4px)" }}
+              style={{
+                background: "rgba(255,255,255,0.92)",
+                color: "#555555",
+                backdropFilter: "blur(4px)",
+                border: "1px solid rgba(255,255,255,0.6)",
+              }}
             >
               {mango.origin}
             </span>
 
-            {/* Hover description overlay — slides up from bottom */}
+            {/* Hover overlay — name + tagline slides up from bottom */}
             <div
               className="absolute inset-0 z-20 flex flex-col justify-end px-4 py-4
                          opacity-0 group-hover:opacity-100
-                         translate-y-3 group-hover:translate-y-0
+                         translate-y-2 group-hover:translate-y-0
                          transition-all duration-500 ease-out"
               style={{
                 background:
-                  "linear-gradient(to top, rgba(10,30,15,0.82) 0%, rgba(10,30,15,0.42) 55%, transparent 100%)",
+                  "linear-gradient(to top, rgba(8,24,12,0.88) 0%, rgba(8,24,12,0.45) 55%, transparent 100%)",
               }}
             >
               <p
@@ -110,12 +126,13 @@ function MangoCard({ mango, index }: { mango: MangoVariety; index: number }) {
                 style={{
                   fontFamily: "var(--font-cormorant)",
                   fontStyle: "italic",
-                  color: "#E8C87A",
+                  color: "#F7C873",
                 }}
               >
                 {mango.tagline}
               </p>
             </div>
+
           </div>
         </div>
 
