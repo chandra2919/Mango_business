@@ -1,33 +1,36 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Phone, MessageCircle, ShoppingBag, CheckCircle2 } from "lucide-react";
+import { Phone, MessageCircle, ShoppingBag } from "lucide-react";
 import { BRAND } from "@/constants/branding";
 import { getWhatsAppUrl, getCallUrl } from "@/lib/utils";
 
 const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
 const trustBadges = [
-  { icon: <CheckCircle2 className="w-3.5 h-3.5" />, label: "USDA Approved"       },
-  { icon: <CheckCircle2 className="w-3.5 h-3.5" />, label: "Air-Flown Fresh"     },
-  { icon: <CheckCircle2 className="w-3.5 h-3.5" />, label: "Naturally Ripened"   },
-  { icon: <CheckCircle2 className="w-3.5 h-3.5" />, label: "Imported Weekly"     },
-  { icon: <CheckCircle2 className="w-3.5 h-3.5" />, label: "1000+ Happy Families"},
+  { label: "USDA Approved",        accent: "#2D6A4F" },
+  { label: "Air-Flown Fresh",      accent: "#F4A300" },
+  { label: "Naturally Ripened",    accent: "#2D6A4F" },
+  { label: "Imported Weekly",      accent: "#F4A300" },
+  { label: "1000+ Happy Families", accent: "#2D6A4F" },
 ];
 
 export function FinalCTA() {
-  const waUrl      = getWhatsAppUrl(BRAND.whatsapp, BRAND.whatsappMessage);
-  const bulkUrl    = getWhatsAppUrl(BRAND.whatsapp, "Hi MangoRoots! I'm interested in placing a bulk order. Please share pricing and availability.");
-  const callUrl    = getCallUrl(BRAND.phone);
+  const waUrl   = getWhatsAppUrl(BRAND.whatsapp, BRAND.whatsappMessage);
+  const bulkUrl = getWhatsAppUrl(
+    BRAND.whatsapp,
+    "Hi MangoRoots! I'm interested in placing a bulk order. Please share pricing and availability."
+  );
+  const callUrl = getCallUrl(BRAND.phone);
 
   return (
     <section
       className="relative overflow-hidden"
       style={{ borderTop: "1px solid #F0EDE6" }}
     >
-      {/* ── Warm tropical background ───────────────────────── */}
+      {/* ── Warm tropical background ─────────────────────── */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 pointer-events-none"
         style={{
           background:
             "linear-gradient(145deg, #FFFDF7 0%, #FFF8EC 35%, #FFFDF7 60%, #E9F5EC 100%)",
@@ -35,39 +38,17 @@ export function FinalCTA() {
         }}
       />
 
-      {/* Decorative floating elements — purely visual, very low opacity */}
-      <div
-        className="pointer-events-none select-none absolute left-[-40px] top-[10%] text-[9rem] animate-float-slow"
-        style={{ opacity: 0.07, zIndex: 1 }}
-        aria-hidden="true"
-      >
-        🥭
-      </div>
-      <div
-        className="pointer-events-none select-none absolute right-[-30px] bottom-[12%] text-[7rem] animate-float"
-        style={{ opacity: 0.06, zIndex: 1, animationDelay: "1.2s" }}
-        aria-hidden="true"
-      >
-        🌿
-      </div>
-      <div
-        className="pointer-events-none select-none absolute right-[12%] top-[8%] text-[4rem] animate-float"
-        style={{ opacity: 0.05, zIndex: 1, animationDelay: "0.5s" }}
-        aria-hidden="true"
-      >
-        🍃
-      </div>
-
-      {/* Soft warm radial glow at centre */}
+      {/* Soft warm radial glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(247,200,115,0.13) 0%, transparent 70%)",
+          background:
+            "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(247,200,115,0.13) 0%, transparent 70%)",
           zIndex: 1,
         }}
       />
 
-      {/* ── Content ──────────────────────────────────────── */}
+      {/* ── Content ────────────────────────────────────────── */}
       <div className="relative sec page-wrap" style={{ zIndex: 10 }}>
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -76,11 +57,28 @@ export function FinalCTA() {
           transition={{ duration: 0.7, ease: EASE }}
           className="text-center max-w-2xl mx-auto"
         >
-          {/* Gold ornamental line */}
+          {/* Ornamental gold rule */}
           <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="h-px flex-1 max-w-20" style={{ background: "linear-gradient(90deg, transparent, #F7C873)" }} />
-            <span className="text-2xl animate-float" style={{ animationDelay: "0.3s" }}>🥭</span>
-            <div className="h-px flex-1 max-w-20" style={{ background: "linear-gradient(90deg, #F7C873, transparent)" }} />
+            <div
+              className="h-px flex-1 max-w-20"
+              style={{ background: "linear-gradient(90deg, transparent, #F7C873)" }}
+            />
+            {/* Pure CSS diamond instead of emoji */}
+            <span
+              style={{
+                display: "inline-block",
+                width: "10px",
+                height: "10px",
+                background: "linear-gradient(135deg, #F4A300, #C9973E)",
+                borderRadius: "2px",
+                transform: "rotate(45deg)",
+                flexShrink: 0,
+              }}
+            />
+            <div
+              className="h-px flex-1 max-w-20"
+              style={{ background: "linear-gradient(90deg, #F7C873, transparent)" }}
+            />
           </div>
 
           <span className="sec-num block mb-2">07 — Order Today</span>
@@ -99,7 +97,7 @@ export function FinalCTA() {
             Taste the Real<br />
             <span
               style={{
-                background: "linear-gradient(90deg, #F4A300 0%, #C9973E 60%, #2D6A4F 100%)",
+                background: "linear-gradient(90deg, #F4A300 0%, #C9973E 55%, #2D6A4F 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -112,15 +110,10 @@ export function FinalCTA() {
           {/* Subtitle */}
           <p
             className="mb-10 leading-relaxed mx-auto"
-            style={{
-              fontSize: "1rem",
-              color: "#4A4A4A",
-              maxWidth: "440px",
-            }}
+            style={{ fontSize: "1rem", color: "#4A4A4A", maxWidth: "440px" }}
           >
-            Fresh seasonal mangoes available now.
-            Don&rsquo;t let another mango season pass without bringing home
-            the real taste of India.
+            Fresh seasonal mangoes available now. Don&rsquo;t let another mango season
+            pass without bringing home the real taste of India.
           </p>
 
           {/* ── CTA Button hierarchy ─────────────────────── */}
@@ -131,7 +124,7 @@ export function FinalCTA() {
             transition={{ duration: 0.55, delay: 0.15, ease: EASE }}
             className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-12"
           >
-            {/* PRIMARY — WhatsApp (most dominant) */}
+            {/* PRIMARY — WhatsApp */}
             <a
               href={waUrl}
               target="_blank"
@@ -144,14 +137,13 @@ export function FinalCTA() {
                 fontFamily: "var(--font-poppins)",
                 fontWeight: 700,
                 boxShadow: "0 6px 28px rgba(37,211,102,0.35)",
-                letterSpacing: "0.01em",
               }}
             >
-              <MessageCircle className="w-4.5 h-4.5" style={{ width: "1.1rem", height: "1.1rem" }} />
+              <MessageCircle style={{ width: "1.1rem", height: "1.1rem" }} />
               Order on WhatsApp
             </a>
 
-            {/* SECONDARY — Call (outline) */}
+            {/* SECONDARY — Call */}
             <a
               href={callUrl}
               className="btn btn-outline flex items-center gap-2 w-full sm:w-auto justify-center"
@@ -166,7 +158,7 @@ export function FinalCTA() {
               Call Us Now
             </a>
 
-            {/* TERTIARY — Bulk (smaller, neutral) */}
+            {/* TERTIARY — Bulk */}
             <a
               href={bulkUrl}
               target="_blank"
@@ -181,16 +173,19 @@ export function FinalCTA() {
                 border: "1px solid #E0D8CC",
                 fontFamily: "var(--font-poppins)",
                 fontWeight: 600,
+                transition: "background 0.2s, border-color 0.2s, color 0.2s",
               }}
               onMouseEnter={e => {
-                (e.currentTarget as HTMLAnchorElement).style.background = "#FFE8B6";
-                (e.currentTarget as HTMLAnchorElement).style.borderColor = "#F7C873";
-                (e.currentTarget as HTMLAnchorElement).style.color = "#7A4E1D";
+                const el = e.currentTarget as HTMLAnchorElement;
+                el.style.background = "#FFE8B6";
+                el.style.borderColor = "#F7C873";
+                el.style.color = "#7A4E1D";
               }}
               onMouseLeave={e => {
-                (e.currentTarget as HTMLAnchorElement).style.background = "#F0EDE6";
-                (e.currentTarget as HTMLAnchorElement).style.borderColor = "#E0D8CC";
-                (e.currentTarget as HTMLAnchorElement).style.color = "#4A4A4A";
+                const el = e.currentTarget as HTMLAnchorElement;
+                el.style.background = "#F0EDE6";
+                el.style.borderColor = "#E0D8CC";
+                el.style.color = "#4A4A4A";
               }}
             >
               <ShoppingBag className="w-3.5 h-3.5" />
@@ -198,36 +193,72 @@ export function FinalCTA() {
             </a>
           </motion.div>
 
-          {/* ── Trust indicators ─────────────────────────── */}
+          {/* ── Trust indicator strip ────────────────────── */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3, ease: EASE }}
           >
-            {/* Divider */}
+            {/* Rule with label */}
             <div className="flex items-center gap-3 mb-5">
               <div className="h-px flex-1" style={{ background: "#F0EDE6" }} />
-              <span style={{ fontSize: "0.7rem", color: "#B0A898", letterSpacing: "0.12em", fontWeight: 600 }}>
-                TRUSTED & CERTIFIED
+              <span
+                style={{
+                  fontSize: "0.65rem",
+                  color: "#B0A898",
+                  letterSpacing: "0.16em",
+                  fontWeight: 700,
+                  fontFamily: "var(--font-poppins)",
+                }}
+              >
+                TRUSTED &amp; CERTIFIED
               </span>
               <div className="h-px flex-1" style={{ background: "#F0EDE6" }} />
             </div>
 
-            {/* Badge row */}
-            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2.5">
-              {trustBadges.map(({ icon, label }, i) => (
+            {/* Badge pills — no icons, pure CSS highlight effect */}
+            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2">
+              {trustBadges.map(({ label, accent }, i) => (
                 <motion.span
                   key={label}
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 8 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.35 + i * 0.07, ease: EASE }}
-                  className="flex items-center gap-1.5 cursor-default"
-                  style={{ fontSize: "0.78rem", color: "#4A4A4A", fontWeight: 500 }}
+                  transition={{ duration: 0.4, delay: 0.38 + i * 0.07, ease: EASE }}
+                  className="group relative inline-flex items-center cursor-default overflow-hidden"
+                  style={{
+                    padding: "0.35rem 0.85rem",
+                    borderRadius: "999px",
+                    border: "1px solid #F0EDE6",
+                    background: "#FFFFFF",
+                    fontSize: "0.78rem",
+                    fontWeight: 600,
+                    color: "#3A3A3A",
+                    fontFamily: "var(--font-poppins)",
+                    transition: "border-color 0.25s, box-shadow 0.25s",
+                    boxShadow: "0 1px 6px rgba(0,0,0,0.04)",
+                  }}
+                  whileHover={{
+                    boxShadow: `0 4px 16px ${accent}28`,
+                    borderColor: accent,
+                    y: -1,
+                  }}
                 >
-                  <span style={{ color: "#2D6A4F" }}>{icon}</span>
-                  <span>{label}</span>
+                  {/* Left-edge accent dot */}
+                  <span
+                    style={{
+                      display: "inline-block",
+                      width: "6px",
+                      height: "6px",
+                      borderRadius: "50%",
+                      background: accent,
+                      marginRight: "7px",
+                      flexShrink: 0,
+                      transition: "transform 0.2s",
+                    }}
+                  />
+                  {label}
                 </motion.span>
               ))}
             </div>
