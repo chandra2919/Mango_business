@@ -81,13 +81,13 @@ export function WhyChooseUs() {
           className="object-cover object-center"
           sizes="100vw"
         />
-        {/* Warm ivory overlay — keeps cards fully readable, image just adds warmth */}
+        {/* Warm ivory overlay — toned down so background image is clearly visible */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(160deg, rgba(255,253,247,0.93) 0%, rgba(255,248,236,0.90) 50%, rgba(255,253,247,0.94) 100%)",
+              "linear-gradient(160deg, rgba(255,253,247,0.62) 0%, rgba(255,248,236,0.55) 50%, rgba(255,253,247,0.62) 100%)",
           }}
         />
       </div>
@@ -126,9 +126,11 @@ export function WhyChooseUs() {
                 style={{
                   borderRadius: "18px",
                   border: `1.5px solid ${f.border}`,
-                  background: "#FFFFFF",
+                  background: "rgba(255,255,255,0.82)",
+                  backdropFilter: "blur(12px)",
+                  WebkitBackdropFilter: "blur(12px)",
                   padding: "1.75rem 1.75rem 2rem",
-                  boxShadow: "0 2px 16px rgba(0,0,0,0.04)",
+                  boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
                   transition: "box-shadow 0.35s ease",
                 }}
               >
