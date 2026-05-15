@@ -2,78 +2,87 @@
 
 import { useEffect, useState } from "react";
 
-interface TimeLeft {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
+interface TimeLeft { days: number; hours: number; minutes: number; seconds: number; }
 
 function getNextSunday(): Date {
   const now = new Date();
-  const daysUntilSunday = (7 - now.getDay()) % 7 || 7;
+  const d   = (7 - now.getDay()) % 7 || 7;
   const next = new Date(now);
-  next.setDate(now.getDate() + daysUntilSunday);
+  next.setDate(now.getDate() + d);
   next.setHours(8, 0, 0, 0);
   return next;
 }
 
 export function CountdownTimer() {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
+  const [t, setT] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
     const target = getNextSunday();
-
     const tick = () => {
-      const now = new Date().getTime();
-      const diff = target.getTime() - now;
-
-      if (diff <= 0) {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        return;
-      }
-
-      setTimeLeft({
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-        minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
-        seconds: Math.floor((diff % (1000 * 60)) / 1000),
+      const diff = target.getTime() - Date.now();
+      if (diff <= 0) { setT({ days: 0, hours: 0, minutes: 0, seconds: 0 }); return; }
+      setT({
+        days:    Math.floor(diff / 86400000),
+        hours:   Math.floor((diff % 86400000) / 3600000),
+        minutes: Math.floor((diff % 3600000)  / 60000),
+        seconds: Math.floor((diff % 60000)    / 1000),
       });
     };
-
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   }, []);
 
   const units = [
-    { label: "Days", value: timeLeft.days },
-    { label: "Hours", value: timeLeft.hours },
-    { label: "Mins", value: timeLeft.minutes },
-    { label: "Secs", value: timeLeft.seconds },
+    { label: "Days",  value: t.days },
+    { label: "Hours", value: t.hours },
+    { label: "Mins",  value: t.minutes },
+    { label: "Secs",  value: t.seconds },
   ];
 
   return (
-    <div className="flex items-center gap-3 sm:gap-4">
+    <div className="flex items-end gap-3">
       {units.map(({ label, value }, i) => (
-        <div key={label} className="flex items-center gap-3 sm:gap-4">
+        <div key={label} className="flex items-end gap-3">
           <div className="flex flex-col items-center">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center">
-              <span className="font-display text-2xl sm:text-3xl font-bold text-white tabular-nums">
+            {/* Frosted glass digit box — visible on dark video bg */}
+            <div
+              className="w-16 h-16 rounded-lg flex items-center justify-center"
+              style={{
+                background: "rgba(255,255,255,0.10)",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+                border: "1px solid rgba(232,200,122,0.45)",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12)",
+              }}
+            >
+              <span
+                className="text-2xl font-bold tabular-nums"
+                style={{
+                  fontFamily: "var(--font-poppins)",
+                  color: "#FFFFFF",
+                  textShadow: "0 1px 8px rgba(0,0,0,0.4)",
+                }}
+              >
                 {String(value).padStart(2, "0")}
               </span>
             </div>
-            <span className="text-white/70 text-xs mt-1.5 font-medium tracking-wide uppercase">
+            {/* Gold label underneath */}
+            <span
+              className="text-xs mt-2 font-semibold uppercase tracking-widest"
+              style={{ color: "#C9973E" }}
+            >
               {label}
             </span>
           </div>
+          {/* Colon separator */}
           {i < units.length - 1 && (
-            <span className="text-white/60 text-2xl font-bold mb-4">:</span>
+            <span
+              className="text-xl font-bold mb-6"
+              style={{ color: "rgba(232,200,122,0.60)" }}
+            >
+              :
+            </span>
           )}
         </div>
       ))}

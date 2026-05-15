@@ -1,211 +1,363 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
-import { ChevronDown, Truck, Shield, Leaf } from "lucide-react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight, ShoppingBag, Phone } from "lucide-react";
+import Image from "next/image";
 import { BRAND } from "@/constants/branding";
-import { getWhatsAppUrl } from "@/lib/utils";
+import { getWhatsAppUrl, getCallUrl } from "@/lib/utils";
 
-const floatingMangoData = [
-  { emoji: "🥭", size: "text-7xl", x: "5%",  y: "15%", delay: 0,   className: "animate-float-1" },
-  { emoji: "🥭", size: "text-5xl", x: "88%", y: "20%", delay: 1.2, className: "animate-float-2" },
-  { emoji: "🥭", size: "text-6xl", x: "80%", y: "65%", delay: 0.6, className: "animate-float-3" },
-  { emoji: "🥭", size: "text-4xl", x: "10%", y: "72%", delay: 1.8, className: "animate-float-1" },
-  { emoji: "🌿", size: "text-4xl", x: "92%", y: "45%", delay: 0.9, className: "animate-float-2" },
-  { emoji: "🌿", size: "text-3xl", x: "3%",  y: "45%", delay: 2.1, className: "animate-float-3" },
+/* ── Slide data ──────────────────────────────────────── */
+const slides = [
+  {
+    id: 1,
+    image:    "/images/cover_image1.jpg",
+    label:    "Premium Indian Mangoes · USA Delivery",
+    headline: "Authentic Indian Mangoes",
+    accent:   "Delivered Fresh in the USA",
+    body:     "Handpicked Banginapalli, Alphonso, Rasalu, Kesar, Himayat & Mallika — sourced directly from orchards in India and delivered fresh across the USA.",
+  },
+  {
+    id: 2,
+    image:    "/images/cover_image2.jpg",
+    label:    "Farm Direct · Air Flown",
+    headline: "Farm-Direct. Air-Flown.",
+    accent:   "Fresh to Your Door in 2–4 Days",
+    body:     "From trusted orchards in Andhra Pradesh, Maharashtra & Gujarat — air-freighted to preserve freshness, delivered directly to your family.",
+  },
+  {
+    id: 3,
+    image:    "/images/cover_image3.jpg",
+    label:    "Season: May – August 2025",
+    headline: "The Mango Season Is Here",
+    accent:   "Limited Stock — Pre-Order Early",
+    body:     "600–800 mangoes sold every weekend. Once the season ends they're gone for a year. Secure your order before it sells out.",
+  },
+  {
+    id: 4,
+    image:    "/images/cover_image4.jpg",
+    label:    "USDA Certified · Naturally Ripened",
+    headline: "No Chemicals. No Compromise.",
+    accent:   "Pure Taste of Indian Orchards",
+    body:     "Every mango is naturally ripened and USDA certified — handpicked at peak sweetness and air-freighted so you taste the real India.",
+  },
 ];
 
-const badges = [
-  { icon: Truck,   label: "Free Weekend Delivery", color: "#3A7D5A", bg: "#EDF6F1", border: "#BFE0D0" },
-  { icon: Shield,  label: "USDA Approved",          color: "#3A5C8A", bg: "#EDF2FA", border: "#BFCFE8" },
-  { icon: Leaf,    label: "Naturally Ripened",       color: "#3A6B3A", bg: "#EEF5EE", border: "#BFDABF" },
-];
+/* ── Framer Motion variants ──────────────────────────── */
+const SLIDE_DURATION = 0.65;
+const EASE_CURVE     = [0.25, 0.46, 0.45, 0.94] as const;
 
+const imageVariants = {
+  enter: (dir: number) => ({
+    x: dir > 0 ? "100%" : "-100%",
+    opacity: 0.6,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    transition: { duration: SLIDE_DURATION, ease: EASE_CURVE },
+  },
+  exit: (dir: number) => ({
+    x: dir > 0 ? "-100%" : "100%",
+    opacity: 0.6,
+    transition: { duration: SLIDE_DURATION, ease: EASE_CURVE },
+  }),
+};
+
+/* Text items stagger inside each slide */
+const textContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.35 } },
+};
+const textItem = {
+  hidden:  { opacity: 0, y: 28 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE_CURVE } },
+};
+
+/* ── Component ───────────────────────────────────────── */
 export function HeroSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end start"] });
-  const y       = useTransform(scrollYProgress, [0, 1], ["0%", "28%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  const [current,   setCurrent]   = useState(0);
+  const [direction, setDirection] = useState(1);
+  const [paused,    setPaused]    = useState(false);
+  const autoRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const whatsappUrl = getWhatsAppUrl(BRAND.whatsapp, BRAND.whatsappMessage);
+  const waUrl   = getWhatsAppUrl(BRAND.whatsapp, BRAND.whatsappMessage);
+  const callUrl = getCallUrl(BRAND.phone);
+  const total   = slides.length;
+
+  const goTo = useCallback((idx: number, dir: number) => {
+    setDirection(dir);
+    setCurrent(idx);
+  }, []);
+
+  const prev = useCallback(() => goTo((current - 1 + total) % total, -1), [current, total, goTo]);
+  const next = useCallback(() => goTo((current + 1) % total,           1), [current, total, goTo]);
+
+  /* Auto-play every 5 s */
+  useEffect(() => {
+    if (paused) return;
+    autoRef.current = setInterval(next, 4000);
+    return () => { if (autoRef.current) clearInterval(autoRef.current); };
+  }, [paused, next]);
+
+  const slide = slides[current];
 
   return (
-    <section
-      id="home"
-      ref={containerRef}
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
-      style={{ background: "linear-gradient(160deg, #FDFCF9 0%, #FAF6EE 40%, #F5EDD8 75%, #EFE2C4 100%)" }}
-    >
-      {/* Subtle radial warm glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 80% 60% at 50% 55%, rgba(184,115,42,0.08) 0%, transparent 70%)" }}
-      />
+    <section id="home" className="pt-16" style={{ background: "#FFFFFF" }}>
 
-      {/* Floating Mangoes — reduced opacity so they feel airy */}
-      {floatingMangoData.map((m, i) => (
-        <motion.div
-          key={i}
-          className={`absolute select-none pointer-events-none ${m.size} ${m.className}`}
-          style={{ left: m.x, top: m.y }}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 0.35, scale: 1 }}
-          transition={{ delay: m.delay, duration: 0.8, ease: "backOut" }}
-        >
-          {m.emoji}
-        </motion.div>
-      ))}
-
-      {/* Main content */}
+      {/* ── Announcement bar ───────────────────────────── */}
       <motion.div
-        style={{ y, opacity }}
-        className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+        initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: EASE_CURVE }}
+        className="py-2.5 text-center text-xs font-semibold tracking-wide"
+        style={{
+          background: "linear-gradient(90deg, #FBF3E0 0%, #FEF9F0 50%, #FBF3E0 100%)",
+          borderBottom: "1px solid #E8C87A",
+          color: "#7A5A1E",
+        }}
       >
-        {/* Season badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-8"
-          style={{ background: "#F5EBD8", color: "#8B5218", border: "1px solid #E2C99A" }}
-        >
-          <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#B8732A" }} />
-          🌟 Fresh Season Stock — {BRAND.season}
-        </motion.div>
+        🌟&nbsp; Fresh Season Stock Now Available &nbsp;·&nbsp; May – August 2025 &nbsp;·&nbsp; Limited Weekly Quantities
+      </motion.div>
 
-        {/* Headline */}
-        <motion.h1
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, delay: 0.1 }}
-          className="font-display font-bold tracking-tight mb-6"
-          style={{ fontSize: "clamp(2.4rem, 6vw, 4.4rem)", lineHeight: 1.1, color: "#2E2520" }}
-        >
-          Taste the{" "}
-          <span className="relative inline-block mango-gradient-text">
-            Summer of India
-            <motion.span
-              className="absolute -bottom-1 left-0 right-0 h-[2.5px] rounded-full"
-              style={{ background: "linear-gradient(90deg, #B8732A, #D4922A)", transformOrigin: "left" }}
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ delay: 0.85, duration: 0.6 }}
+      {/* ── Full-width carousel ─────────────────────────── */}
+      <div
+        className="relative w-full overflow-hidden select-none"
+        style={{ height: "clamp(340px, 52vw, 600px)" }}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+      >
+
+        {/* ── Sliding images ─────────────────────────────── */}
+        <AnimatePresence initial={false} custom={direction}>
+          <motion.div
+            key={current}
+            custom={direction}
+            variants={imageVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            className="absolute inset-0"
+          >
+            <Image
+              src={slide.image}
+              alt={slide.headline}
+              fill
+              priority={current === 0}
+              className="object-cover object-center"
+              sizes="100vw"
             />
-          </span>
-          <br />Again
-        </motion.h1>
 
-        {/* Subheadline */}
-        <motion.p
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.22 }}
-          className="text-lg sm:text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto mb-10"
-          style={{ color: "#6B5C53" }}
-        >
-          Authentic handpicked Indian mangoes — Banginapalli, Alphonso, Rasalu &amp; more.
-          Sourced directly from Indian orchards, delivered fresh across the USA.
-        </motion.p>
-
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.38 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
-        >
-          <motion.a
-            href={whatsappUrl}
-            target="_blank" rel="noopener noreferrer"
-            whileHover={{ scale: 1.04, y: -2 }}
-            whileTap={{ scale: 0.97 }}
-            className="flex items-center justify-center gap-2.5 px-8 py-4 rounded-full
-                       text-white text-base font-semibold w-full sm:w-auto"
-            style={{ background: "#B8732A", boxShadow: "0 6px 24px rgba(184,115,42,0.3)" }}
-          >
-            <span className="text-lg">🛒</span> Order Now
-          </motion.a>
-          <motion.button
-            onClick={() => document.getElementById("varieties")?.scrollIntoView({ behavior: "smooth" })}
-            whileHover={{ scale: 1.03, y: -1 }}
-            whileTap={{ scale: 0.97 }}
-            className="flex items-center justify-center gap-2.5 px-8 py-4 rounded-full
-                       text-base font-semibold border w-full sm:w-auto"
-            style={{
-              background: "#FFFFFF",
-              color: "#2E2520",
-              border: "1px solid #E0D4C4",
-              boxShadow: "0 2px 14px rgba(0,0,0,0.07)",
-            }}
-          >
-            <span className="text-lg">🥭</span> Explore Mangoes
-          </motion.button>
-        </motion.div>
-
-        {/* Trust badges */}
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.52 }}
-          className="flex flex-wrap items-center justify-center gap-3"
-        >
-          {badges.map(({ icon: Icon, label, color, bg, border }) => (
+            {/* Gradient overlay — deep left for text, fades right */}
             <div
-              key={label}
-              className="flex items-center gap-2 px-4 py-2 rounded-full"
-              style={{ background: bg, border: `1px solid ${border}` }}
-            >
-              <Icon className="w-3.5 h-3.5" style={{ color }} />
-              <span className="text-xs font-semibold" style={{ color }}>{label}</span>
-            </div>
-          ))}
-        </motion.div>
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(110deg, rgba(10,30,15,0.80) 0%, rgba(10,30,15,0.58) 42%, rgba(10,30,15,0.18) 75%, transparent 100%)",
+              }}
+            />
+          </motion.div>
+        </AnimatePresence>
 
-        {/* Stats row */}
-        <motion.div
-          initial={{ opacity: 0, y: 26 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.68 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 mt-14"
+        {/* ── Text overlay ───────────────────────────────── */}
+        <div className="absolute inset-0 flex items-center z-10">
+          <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-14 w-full">
+            <div className="max-w-lg">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`text-${current}`}
+                  variants={textContainer}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {/* Italic gold label */}
+                  <motion.p
+                    variants={textItem}
+                    style={{
+                      fontFamily: "var(--font-cormorant)",
+                      fontStyle: "italic",
+                      color: "#E8C87A",
+                      fontSize: "1rem",
+                      letterSpacing: "0.04em",
+                      marginBottom: "0.6rem",
+                    }}
+                  >
+                    {slide.label}
+                  </motion.p>
+
+                  {/* Main headline */}
+                  <motion.h1
+                    variants={textItem}
+                    style={{
+                      fontFamily: "var(--font-poppins)",
+                      fontSize: "clamp(1.85rem, 3.8vw, 3rem)",
+                      fontWeight: 800,
+                      lineHeight: 1.15,
+                      color: "#FFFFFF",
+                      marginBottom: "0.4rem",
+                      letterSpacing: "-0.01em",
+                    }}
+                  >
+                    {slide.headline}
+                  </motion.h1>
+
+                  {/* Gold accent line */}
+                  <motion.p
+                    variants={textItem}
+                    style={{
+                      fontFamily: "var(--font-poppins)",
+                      fontSize: "clamp(1rem, 2vw, 1.45rem)",
+                      fontWeight: 600,
+                      color: "#C9973E",
+                      marginBottom: "1rem",
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {slide.accent}
+                  </motion.p>
+
+                  {/* Body text */}
+                  <motion.p
+                    variants={textItem}
+                    style={{
+                      fontSize: "0.875rem",
+                      lineHeight: 1.7,
+                      color: "rgba(255,255,255,0.80)",
+                      marginBottom: "2rem",
+                      maxWidth: "420px",
+                    }}
+                  >
+                    {slide.body}
+                  </motion.p>
+
+                  {/* CTA buttons */}
+                  <motion.div variants={textItem} className="flex flex-wrap gap-3">
+                    <a
+                      href={waUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-green flex items-center gap-2 px-6 py-3 text-sm"
+                    >
+                      <ShoppingBag className="w-4 h-4" /> Order on WhatsApp
+                    </a>
+                    <a
+                      href={callUrl}
+                      className="flex items-center gap-2 px-6 py-3 rounded text-sm font-semibold transition-all duration-200"
+                      style={{
+                        background: "rgba(255,255,255,0.12)",
+                        backdropFilter: "blur(10px)",
+                        WebkitBackdropFilter: "blur(10px)",
+                        border: "1px solid rgba(255,255,255,0.35)",
+                        color: "#FFFFFF",
+                        position: "relative",
+                        overflow: "hidden",
+                      }}
+                      onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.22)"; }}
+                      onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.12)"; }}
+                    >
+                      <Phone className="w-4 h-4" /> Call to Order
+                    </a>
+                  </motion.div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Left arrow ─────────────────────────────────── */}
+        <button
+          onClick={prev}
+          aria-label="Previous slide"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center rounded-full transition-all duration-200"
+          style={{
+            width: "46px", height: "46px",
+            background: "rgba(255,255,255,0.14)",
+            backdropFilter: "blur(10px)",
+            border: "1px solid rgba(255,255,255,0.30)",
+          }}
+          onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.28)"; e.currentTarget.style.transform = "translateY(-50%) scale(1.08)"; }}
+          onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.14)"; e.currentTarget.style.transform = "translateY(-50%) scale(1)"; }}
         >
+          <ChevronLeft className="w-5 h-5 text-white" />
+        </button>
+
+        {/* ── Right arrow ────────────────────────────────── */}
+        <button
+          onClick={next}
+          aria-label="Next slide"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center rounded-full transition-all duration-200"
+          style={{
+            width: "46px", height: "46px",
+            background: "rgba(255,255,255,0.14)",
+            backdropFilter: "blur(10px)",
+            border: "1px solid rgba(255,255,255,0.30)",
+          }}
+          onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.28)"; e.currentTarget.style.transform = "translateY(-50%) scale(1.08)"; }}
+          onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.14)"; e.currentTarget.style.transform = "translateY(-50%) scale(1)"; }}
+        >
+          <ChevronRight className="w-5 h-5 text-white" />
+        </button>
+
+        {/* ── Dot indicators + counter ────────────────────── */}
+        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i, i > current ? 1 : -1)}
+              aria-label={`Go to slide ${i + 1}`}
+              className="rounded-full transition-all duration-350"
+              style={{
+                width:      i === current ? "28px" : "8px",
+                height:     "8px",
+                background: i === current ? "#C9973E" : "rgba(255,255,255,0.45)",
+                boxShadow:  i === current ? "0 0 8px rgba(201,151,62,0.6)" : "none",
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Slide counter — bottom right */}
+        <div
+          className="absolute bottom-5 right-5 z-20 text-xs font-semibold tabular-nums"
+          style={{ color: "rgba(255,255,255,0.55)", fontFamily: "var(--font-poppins)" }}
+        >
+          {String(current + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+        </div>
+
+        {/* Progress bar — thin auto-play indicator at very top of carousel */}
+        {!paused && (
+          <motion.div
+            key={`progress-${current}`}
+            className="absolute top-0 left-0 h-0.5 z-20"
+            style={{ background: "#C9973E", transformOrigin: "left" }}
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 4, ease: "linear" }}
+          />
+        )}
+      </div>
+
+      {/* ── Stats strip below carousel ─────────────────── */}
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-10">
+        <div className="grid grid-cols-3" style={{ borderBottom: "1px solid #F0F0F0" }}>
           {[
-            { value: "800+", label: "Mangoes/Weekend", emoji: "🥭" },
-            { value: "6",    label: "Premium Varieties", emoji: "✨" },
-            { value: "10+",  label: "States Delivered",  emoji: "🚚" },
-            { value: "100%", label: "Naturally Ripened",  emoji: "🌿" },
-          ].map(({ value, label, emoji }, i) => (
+            { val: "800+", lbl: "Mangoes Per Weekend" },
+            { val: "6",    lbl: "Premium Varieties"   },
+            { val: "10+",  lbl: "US States Served"    },
+          ].map(({ val, lbl }, i) => (
             <motion.div
-              key={label}
-              initial={{ opacity: 0, scale: 0.85 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.72 + i * 0.08 }}
-              className="flex flex-col items-center gap-1"
+              key={lbl}
+              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 + i * 0.08, ease: EASE_CURVE }}
+              className="py-5 text-center"
+              style={{ borderRight: i < 2 ? "1px solid #F0F0F0" : "none" }}
             >
-              <div className="flex items-center gap-1.5">
-                <span className="text-lg">{emoji}</span>
-                <span className="font-display text-2xl font-bold" style={{ color: "#2E2520" }}>{value}</span>
-              </div>
-              <span className="text-xs font-medium" style={{ color: "#9A8880" }}>{label}</span>
+              <p className="font-bold text-xl" style={{ fontFamily: "var(--font-poppins)", color: "#15562B" }}>{val}</p>
+              <p className="text-xs mt-0.5" style={{ color: "#888888" }}>{lbl}</p>
             </motion.div>
           ))}
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
-      {/* Scroll cue */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
-        onClick={() => document.getElementById("stats")?.scrollIntoView({ behavior: "smooth" })}
-      >
-        <motion.div
-          animate={{ y: [0, 7, 0] }}
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          className="flex flex-col items-center gap-1.5"
-        >
-          <span className="text-xs font-medium tracking-widest uppercase" style={{ color: "#B8A898" }}>Scroll</span>
-          <ChevronDown className="w-5 h-5" style={{ color: "#B8732A" }} />
-        </motion.div>
-      </motion.div>
     </section>
   );
 }

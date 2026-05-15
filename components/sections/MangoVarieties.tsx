@@ -1,157 +1,179 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { Star, Calendar, Leaf, Zap } from "lucide-react";
+import Image from "next/image";
 import { mangoVarieties } from "@/data/mangoes";
-import { getWhatsAppUrl } from "@/lib/utils";
 import { BRAND } from "@/constants/branding";
+import { getWhatsAppUrl } from "@/lib/utils";
 import type { MangoVariety } from "@/types";
 
-/* Soft pastel card top colors per variety */
-const cardTops: Record<string, { from: string; to: string; text: string }> = {
-  banginapalli: { from: "#FDF4E3", to: "#F5E0B0", text: "#7A4F10" },
-  rasalu:       { from: "#F9EFE0", to: "#EDD69A", text: "#7A4510" },
-  alphonso:     { from: "#FDF0E6", to: "#F4CBAB", text: "#7A3E18" },
-  kesar:        { from: "#FDF1EA", to: "#F2C4A0", text: "#7A3A18" },
-  himayat:      { from: "#FAF5E0", to: "#EBD98A", text: "#6A4A08" },
-  mallika:      { from: "#F9EDE0", to: "#E9C898", text: "#6A3E10" },
+const EASE = [0.25, 0.46, 0.45, 0.94] as const;
+
+/* Actual images mapped to variety id */
+const images: Record<string, string> = {
+  banginapalli: "/images/banginapalli_mango.jpg",
+  rasalu:       "/images/Rasalu_mangoes.jpg",
+  alphonso:     "/images/Alphanso_Mango.jpg",
+  kesar:        "/images/kesar_mango.jpg",
+  himayat:      "/images/himayat_mango.webp",
+  mallika:      "/images/mallika_mango.jpg",
 };
 
-function SweetnessBar({ level }: { level: number }) {
-  return (
-    <div className="flex items-center gap-2">
-      <div className="flex gap-0.5">
-        {Array.from({ length: 10 }).map((_, i) => (
-          <div
-            key={i}
-            className="h-2 rounded-full"
-            style={{
-              width: "11px",
-              background: i < level
-                ? "linear-gradient(90deg, #B8732A, #D4922A)"
-                : "#EDE5D8",
-            }}
-          />
-        ))}
-      </div>
-      <span className="text-xs font-medium" style={{ color: "#9A8880" }}>{level}/10</span>
-    </div>
-  );
-}
+/* Image top background tint per variety */
+const tops: Record<string, { border: string }> = {
+  banginapalli: { border: "#E8C87A"  },
+  rasalu:       { border: "#F5D68A"  },
+  alphonso:     { border: "#E8C87A"  },
+  kesar:        { border: "#BBF7D0"  },
+  himayat:      { border: "#E8C87A"  },
+  mallika:      { border: "#BBF7D0"  },
+};
+
+/* Scroll direction: left / center / right based on grid column */
+const scrollDir = (i: number) => {
+  const col = i % 3;
+  if (col === 0) return { x: -70, y: 0  };  // from left
+  if (col === 2) return { x:  70, y: 0  };  // from right
+  return              { x:   0, y: 40  };   // from bottom
+};
 
 function MangoCard({ mango, index }: { mango: MangoVariety; index: number }) {
-  const [hovered, setHovered] = useState(false);
-  const top = cardTops[mango.id] ?? cardTops.banginapalli;
+  const top      = tops[mango.id] ?? tops.banginapalli;
+  const imgSrc   = images[mango.id] ?? "/images/banginapalli_mango.jpg";
+  const orderUrl = getWhatsAppUrl(BRAND.whatsapp,
+    `Hi MangoRoots! I'd like to order ${mango.name} mangoes. Please share availability and pricing.`);
 
-  const orderUrl = getWhatsAppUrl(
-    BRAND.whatsapp,
-    `Hi MangoRoots! I'd like to order ${mango.name} mangoes. Please share availability and pricing.`
-  );
+  const dir = scrollDir(index);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 36 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.5, delay: index * 0.07, ease: [0.25, 0.46, 0.45, 0.94] }}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      whileHover={{ y: -7 }}
-      className="group rounded-3xl overflow-hidden cursor-default"
-      style={{
-        background: "#FFFFFF",
-        border: "1px solid #EAE2D6",
-        boxShadow: "0 2px 20px rgba(0,0,0,0.06)",
-        transition: "box-shadow 0.3s, border-color 0.3s",
-      }}
+      initial={{ opacity: 0, x: dir.x, y: dir.y }}
+      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.7, delay: index * 0.09, ease: EASE }}
     >
-      {/* Card top */}
+      {/* Outer wrapper */}
       <div
-        className="relative h-44 flex items-center justify-center overflow-hidden"
-        style={{ background: `linear-gradient(145deg, ${top.from}, ${top.to})` }}
+        className="mango-slide-card card-lift flex flex-col rounded-2xl group"
+        style={{ border: `1.5px solid ${top.border}`, background: "#FFFFFF" }}
       >
-        <motion.div
-          animate={{ scale: hovered ? 1.12 : 1, rotate: hovered ? 6 : 0 }}
-          transition={{ duration: 0.35, ease: "backOut" }}
-          className="text-7xl select-none z-10"
-        >
-          🥭
-        </motion.div>
+        {/* ── slide1: IMAGE PANEL ── translateY(40px) → 0 on hover */}
+        <div className="ms1">
+          <div className="relative w-full h-52 overflow-hidden rounded-t-2xl">
+            {/* Zoom-out on hover: scale(1) → scale(0.91) with smooth ease */}
+            <Image
+              src={imgSrc}
+              alt={mango.name}
+              fill
+              className="object-cover"
+              style={{
+                transform: "scale(1)",
+                transition: "transform 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.transform = "scale(0.91)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform = "scale(1)"; }}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            />
 
-        {mango.featured && (
-          <div
-            className="absolute top-3 left-3 flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold"
-            style={{ background: "rgba(255,255,255,0.82)", color: top.text, border: "1px solid rgba(0,0,0,0.08)" }}
-          >
-            <Star className="w-3 h-3 fill-current" />
-            Fan Favorite
-          </div>
-        )}
+            {/* Featured badge */}
+            {mango.featured && (
+              <span className="absolute top-3 left-3 tag-gold text-xs z-10">⭐ Popular</span>
+            )}
 
-        <div
-          className="absolute bottom-3 right-3 px-2.5 py-1 rounded-lg text-xs font-semibold"
-          style={{ background: "rgba(0,0,0,0.10)", color: "#FFF" }}
-        >
-          {mango.origin}
-        </div>
-      </div>
-
-      {/* Card body */}
-      <div className="p-6">
-        <h3 className="font-display text-xl font-bold mb-0.5" style={{ color: "#2E2520" }}>{mango.name}</h3>
-        <p className="text-sm font-semibold mb-3" style={{ color: "#B8732A" }}>{mango.tagline}</p>
-        <p className="text-sm leading-relaxed mb-5 line-clamp-3" style={{ color: "#7A6B62" }}>
-          {mango.description}
-        </p>
-
-        {/* Taste chips */}
-        <div className="flex flex-wrap gap-1.5 mb-4">
-          {mango.tasteProfile.map((t) => (
+            {/* Origin tag */}
             <span
-              key={t}
-              className="px-2.5 py-1 rounded-full text-xs font-medium"
-              style={{ background: "#F5EBD8", color: "#8B5218", border: "1px solid #E2C99A" }}
+              className="absolute bottom-3 right-3 text-xs font-medium px-2.5 py-1 rounded-full z-10"
+              style={{ background: "rgba(255,255,255,0.92)", color: "#555555", backdropFilter: "blur(4px)" }}
             >
-              {t}
+              {mango.origin}
             </span>
-          ))}
-        </div>
 
-        {/* Details */}
-        <div className="space-y-2.5 mb-5">
-          <div>
-            <div className="flex items-center gap-1.5 mb-1.5">
-              <Zap className="w-3.5 h-3.5" style={{ color: "#B8732A" }} />
-              <span className="text-xs font-medium uppercase tracking-wide" style={{ color: "#9A8880" }}>Sweetness</span>
+            {/* Hover description overlay — slides up from bottom */}
+            <div
+              className="absolute inset-0 z-20 flex flex-col justify-end px-4 py-4
+                         opacity-0 group-hover:opacity-100
+                         translate-y-3 group-hover:translate-y-0
+                         transition-all duration-500 ease-out"
+              style={{
+                background:
+                  "linear-gradient(to top, rgba(10,30,15,0.82) 0%, rgba(10,30,15,0.42) 55%, transparent 100%)",
+              }}
+            >
+              <p
+                className="text-white font-bold text-sm leading-tight mb-0.5"
+                style={{ fontFamily: "var(--font-poppins)" }}
+              >
+                {mango.name}
+              </p>
+              <p
+                className="text-xs leading-snug"
+                style={{
+                  fontFamily: "var(--font-cormorant)",
+                  fontStyle: "italic",
+                  color: "#E8C87A",
+                }}
+              >
+                {mango.tagline}
+              </p>
             </div>
-            <SweetnessBar level={mango.sweetness} />
-          </div>
-          <div className="flex items-center gap-2">
-            <Leaf className="w-3.5 h-3.5" style={{ color: "#5A9A6A" }} />
-            <span className="text-xs" style={{ color: "#9A8880" }}>Texture:</span>
-            <span className="text-xs font-semibold" style={{ color: "#3A2E28" }}>{mango.texture}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Calendar className="w-3.5 h-3.5" style={{ color: "#5A7AAA" }} />
-            <span className="text-xs" style={{ color: "#9A8880" }}>Season:</span>
-            <span className="text-xs font-semibold" style={{ color: "#3A2E28" }}>{mango.availability}</span>
           </div>
         </div>
 
-        {/* CTA */}
-        <motion.a
-          href={orderUrl}
-          target="_blank" rel="noopener noreferrer"
-          whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
-          className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-white text-sm font-semibold"
-          style={{
-            background: "linear-gradient(135deg, #B8732A, #9E621F)",
-            boxShadow: "0 3px 14px rgba(184,115,42,0.28)",
-          }}
-        >
-          Order {mango.name}
-        </motion.a>
+        {/* ── slide2: CONTENT PANEL ── starts translateY(-52px), slides to 0 on hover */}
+        <div className="ms2 p-5 pb-10 flex flex-col flex-1">
+          <h3 className="font-bold text-base mb-0.5"
+            style={{ fontFamily: "var(--font-poppins)", color: "#111111" }}>
+            {mango.name}
+          </h3>
+
+          {/* Italic gold tagline — Playfair Display */}
+          <p className="mb-3"
+            style={{ fontFamily: "var(--font-cormorant)", fontStyle: "italic", color: "#C9973E", fontSize: "0.9rem" }}>
+            {mango.tagline}
+          </p>
+
+          <p className="text-sm leading-relaxed mb-4 flex-1" style={{ color: "#555555" }}>
+            {mango.description}
+          </p>
+
+          {/* Taste tags */}
+          <div className="flex flex-wrap gap-1.5 mb-4">
+            {mango.tasteProfile.map(t => (
+              <span key={t} className="text-xs px-2.5 py-0.5 rounded-full"
+                style={{ background: "#FBF3E0", color: "#7A5A1E", border: "1px solid #E8C87A" }}>
+                {t}
+              </span>
+            ))}
+          </div>
+
+          {/* Divider details */}
+          <div className="space-y-2 mb-5 py-3"
+            style={{ borderTop: "1px solid #F0F0F0", borderBottom: "1px solid #F0F0F0" }}>
+            <div className="flex justify-between items-center text-xs">
+              <span style={{ color: "#888888" }}>Sweetness</span>
+              <div className="flex gap-0.5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="w-3 h-2.5 rounded-sm"
+                    style={{ background: i < Math.round(mango.sweetness / 2) ? "#C9973E" : "#F0F0E8" }} />
+                ))}
+              </div>
+            </div>
+            <div className="flex justify-between text-xs">
+              <span style={{ color: "#888888" }}>Texture</span>
+              <span className="font-medium" style={{ color: "#111111" }}>{mango.texture}</span>
+            </div>
+            <div className="flex justify-between text-xs">
+              <span style={{ color: "#888888" }}>Season</span>
+              <span className="font-semibold" style={{ color: "#15562B" }}>{mango.availability}</span>
+            </div>
+          </div>
+
+          <a href={orderUrl} target="_blank" rel="noopener noreferrer"
+            className="btn btn-green block w-full text-center py-2.5 text-sm"
+          >
+            Order {mango.name}
+          </a>
+        </div>
       </div>
     </motion.div>
   );
@@ -159,23 +181,18 @@ function MangoCard({ mango, index }: { mango: MangoVariety; index: number }) {
 
 export function MangoVarieties() {
   return (
-    <section id="varieties" className="py-24 md:py-32" style={{ background: "#FAF7F2" }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="varieties" className="sec" style={{ background: "#FFFFFF", borderTop: "1px solid #F0F0F0" }}>
+      <div className="page-wrap">
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.55 }}
-          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.6, ease: EASE }}
+          className="mb-12"
         >
-          <span className="badge-premium mb-4 inline-flex">🥭 Premium Varieties</span>
-          <h2 className="heading-section mb-4" style={{ color: "#2E2520" }}>
-            Six Legendary{" "}
-            <span className="mango-gradient-text">Indian Mangoes</span>
-          </h2>
-          <p className="text-body text-lg max-w-2xl mx-auto">
-            Each variety handpicked from its region of origin — carrying centuries of flavor,
-            aroma, and the unmistakable taste of an Indian summer.
+          <span className="sec-num">01 — Our Products</span>
+          <span className="sec-label block mt-1">Handpicked Seasonal Varieties</span>
+          <h2 className="sec-heading mt-2 mb-4">Six Premium Indian Mango Varieties</h2>
+          <p className="sec-body max-w-2xl mt-5">
+            Handpicked from their regions of origin — each with its own distinct flavour, aroma, and heritage.
           </p>
         </motion.div>
 
@@ -184,29 +201,17 @@ export function MangoVarieties() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="text-center mt-14"
+          initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
+          viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3, ease: EASE }}
+          className="mt-10 pt-8"
+          style={{ borderTop: "1px solid #F0F0F0" }}
         >
-          <p className="text-sm mb-4" style={{ color: "#9A8880" }}>
-            Not sure which to choose? Let us help you pick the perfect variety.
-          </p>
-          <motion.a
-            href={getWhatsAppUrl(BRAND.whatsapp, "Hi! I need help choosing the right mango variety. Can you help?")}
+          <a href={getWhatsAppUrl(BRAND.whatsapp, "Hi! I need help choosing the right mango variety.")}
             target="_blank" rel="noopener noreferrer"
-            whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full text-sm font-semibold"
-            style={{
-              background: "#FFFFFF",
-              color: "#8B5218",
-              border: "1px solid #E2C99A",
-              boxShadow: "0 2px 14px rgba(0,0,0,0.07)",
-            }}
+            className="btn btn-outline inline-flex items-center gap-2 px-5 py-2.5 text-sm"
           >
-            💬 Ask Us on WhatsApp
-          </motion.a>
+            💬 Not sure? Ask us on WhatsApp
+          </a>
         </motion.div>
       </div>
     </section>

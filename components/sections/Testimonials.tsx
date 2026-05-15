@@ -1,121 +1,86 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { testimonials } from "@/data/testimonials";
 
-function StarRating({ rating }: { rating: number }) {
+const EASE = [0.25, 0.46, 0.45, 0.94] as const;
+
+const avatarColors = ["#C9973E","#15562B","#A87D2E","#0D3D1E","#B8860B","#166534","#C9973E","#15562B"];
+
+function Stars({ n }: { n: number }) {
   return (
-    <div className="flex items-center gap-0.5">
+    <div className="flex gap-0.5 mb-3">
       {Array.from({ length: 5 }).map((_, i) => (
         <Star key={i} className="w-3.5 h-3.5"
-          style={{ fill: i < rating ? "#D4922A" : "none", color: i < rating ? "#D4922A" : "#D0C8C0" }} />
+          style={{ fill: i < n ? "#C9973E" : "none", color: i < n ? "#C9973E" : "#D0C8B0" }} />
       ))}
     </div>
   );
 }
 
-const avatarGrads = [
-  "linear-gradient(135deg,#C8832A,#E0A840)",
-  "linear-gradient(135deg,#A05070,#C87890)",
-  "linear-gradient(135deg,#6060B0,#8080C8)",
-  "linear-gradient(135deg,#3A8A60,#5AAA80)",
-  "linear-gradient(135deg,#4060A8,#6080C0)",
-  "linear-gradient(135deg,#B07020,#D09040)",
-  "linear-gradient(135deg,#903040,#B05060)",
-  "linear-gradient(135deg,#308888,#50A8A8)",
+const cardStyles = [
+  { bg: "#FFFFFF", border: "#E8C87A"  },
+  { bg: "#FFFFFF", border: "#BBF7D0"  },
+  { bg: "#FFFFFF", border: "#E8C87A"  },
 ];
 
 export function Testimonials() {
-  const [current, setCurrent] = useState(0);
-  const [autoPlay, setAutoPlay] = useState(true);
-  const total = testimonials.length;
-
-  const prev = () => { setCurrent(c => (c - 1 + total) % total); setAutoPlay(false); };
-  const next = () => { setCurrent(c => (c + 1) % total); setAutoPlay(false); };
+  const [cur, setCur]   = useState(0);
+  const [auto, setAuto] = useState(true);
+  const total           = testimonials.length;
 
   useEffect(() => {
-    if (!autoPlay) return;
-    const id = setInterval(() => setCurrent(c => (c + 1) % total), 4500);
+    if (!auto) return;
+    const id = setInterval(() => setCur(c => (c + 1) % total), 5000);
     return () => clearInterval(id);
-  }, [autoPlay, total]);
+  }, [auto, total]);
 
-  const visible = [
-    testimonials[current % total],
-    testimonials[(current + 1) % total],
-    testimonials[(current + 2) % total],
-  ];
+  const prev = () => { setCur(c => (c - 1 + total) % total); setAuto(false); };
+  const next = () => { setCur(c => (c + 1) % total); setAuto(false); };
+
+  const vis = [testimonials[cur % total], testimonials[(cur + 1) % total], testimonials[(cur + 2) % total]];
 
   return (
-    /* Soft warm cream background — not dark */
-    <section id="testimonials" className="py-24 md:py-32 overflow-hidden"
-      style={{ background: "linear-gradient(160deg, #F4EFE6 0%, #EDE5D8 100%)" }}>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="testimonials" className="sec" style={{ background: "#FFFFFF", borderTop: "1px solid #F0F0F0" }}>
+      <div className="page-wrap">
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55 }}
-          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.6, ease: EASE }}
+          className="mb-12"
         >
-          <span className="badge-premium mb-4 inline-flex">💬 Real Reviews</span>
-          <h2 className="heading-section mb-4" style={{ color: "#2E2520" }}>
-            What Our{" "}
-            <span className="mango-gradient-text">Customers Say</span>
-          </h2>
-          <p className="text-body text-lg max-w-xl mx-auto">
-            Real families, real emotions, real Indian mangoes.
-          </p>
+          <span className="sec-num">04 — Customer Reviews</span>
+          <span className="sec-label block mt-1">Real Families, Real Taste</span>
+          <h2 className="sec-heading mt-2 mb-4">What Our Customers Say</h2>
+          <p className="sec-body max-w-xl mt-5">Real Indian-American families sharing their mango experience.</p>
         </motion.div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
           <AnimatePresence mode="popLayout">
-            {visible.map((t, i) => (
-              <motion.div
-                key={`${t.id}-${current}-${i}`}
-                initial={{ opacity: 0, y: 18, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -18, scale: 0.96 }}
-                transition={{ duration: 0.38, delay: i * 0.06 }}
-                className="rounded-2xl p-7"
-                style={{
-                  background: i === 0 ? "#FFFFFF" : "rgba(255,255,255,0.70)",
-                  border: "1px solid #E8DDD0",
-                  boxShadow: i === 0 ? "0 4px 24px rgba(184,115,42,0.10)" : "0 2px 12px rgba(0,0,0,0.05)",
-                }}
+            {vis.map((t, i) => (
+              <motion.div key={`${t.id}-${cur}-${i}`}
+                initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4, delay: i * 0.08, ease: EASE }}
+                className="card-lift rounded-2xl p-6 cursor-default"
+                style={{ background: cardStyles[i].bg, border: `1.5px solid ${cardStyles[i].border}` }}
               >
-                {/* Quote icon */}
-                <Quote className="w-7 h-7 mb-4" style={{ color: "#D4B896" }} />
-
-                <p className="text-sm leading-relaxed mb-5" style={{ color: "#5A4A42" }}>
+                <Stars n={t.rating} />
+                <p className="text-sm leading-relaxed mb-4" style={{ color: "#555555" }}>
                   &ldquo;{t.review}&rdquo;
                 </p>
-
                 {t.variety && (
-                  <div
-                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium mb-4"
-                    style={{ background: "#F5EBD8", color: "#8B5218", border: "1px solid #E2C99A" }}
-                  >
-                    🥭 {t.variety}
-                  </div>
+                  <span className="tag-gold text-xs mb-3 inline-block">🥭 {t.variety}</span>
                 )}
-
-                <div className="flex items-center gap-3">
-                  {/* Avatar */}
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-                    style={{ background: avatarGrads[parseInt(t.id) - 1] ?? avatarGrads[0] }}
-                  >
-                    <span className="text-white font-bold text-xs">{t.initials}</span>
+                <div className="flex items-center gap-3 pt-3" style={{ borderTop: "1px solid #F0F0F0" }}>
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
+                    style={{ background: avatarColors[(parseInt(t.id) - 1) % avatarColors.length] }}>
+                    {t.initials}
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-sm truncate" style={{ color: "#2E2520" }}>{t.name}</p>
-                    <p className="text-xs" style={{ color: "#9A8880" }}>{t.location}</p>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: "#111111" }}>{t.name}</p>
+                    <p className="text-xs" style={{ color: "#888888" }}>{t.location}</p>
                   </div>
-                  <StarRating rating={t.rating} />
                 </div>
               </motion.div>
             ))}
@@ -123,33 +88,26 @@ export function Testimonials() {
         </div>
 
         {/* Navigation */}
-        <div className="flex items-center justify-center gap-6">
-          <button onClick={prev} aria-label="Previous"
-            className="w-10 h-10 rounded-full flex items-center justify-center transition-all"
-            style={{ background: "rgba(255,255,255,0.7)", border: "1px solid #E0D4C4" }}>
-            <ChevronLeft className="w-5 h-5" style={{ color: "#7A6B62" }} />
+        <div className="flex items-center gap-4">
+          <button onClick={prev}
+            className="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-110"
+            style={{ background: "#FBF3E0", border: "1.5px solid #E8C87A" }}>
+            <ChevronLeft className="w-4 h-4" style={{ color: "#7A5A1E" }} />
           </button>
-
-          <div className="flex items-center gap-1.5">
+          <div className="flex gap-1.5">
             {testimonials.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => { setCurrent(i); setAutoPlay(false); }}
-                aria-label={`Slide ${i + 1}`}
+              <button key={i} onClick={() => { setCur(i); setAuto(false); }}
                 className="rounded-full transition-all duration-300"
                 style={{
-                  width: i === current ? "24px" : "8px",
-                  height: "8px",
-                  background: i === current ? "#B8732A" : "#D4C4B8",
-                }}
-              />
+                  width: i === cur ? "24px" : "8px", height: "8px",
+                  background: i === cur ? "#C9973E" : "#E8C87A",
+                }} />
             ))}
           </div>
-
-          <button onClick={next} aria-label="Next"
-            className="w-10 h-10 rounded-full flex items-center justify-center transition-all"
-            style={{ background: "rgba(255,255,255,0.7)", border: "1px solid #E0D4C4" }}>
-            <ChevronRight className="w-5 h-5" style={{ color: "#7A6B62" }} />
+          <button onClick={next}
+            className="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-110"
+            style={{ background: "#FBF3E0", border: "1.5px solid #E8C87A" }}>
+            <ChevronRight className="w-4 h-4" style={{ color: "#7A5A1E" }} />
           </button>
         </div>
       </div>

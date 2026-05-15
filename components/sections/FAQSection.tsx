@@ -2,43 +2,42 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus } from "lucide-react";
+import { Plus, Minus } from "lucide-react";
 import { faqs } from "@/data/faq";
+import { BRAND } from "@/constants/branding";
+import { getWhatsAppUrl } from "@/lib/utils";
+
+const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
 function FAQItem({ question, answer, isOpen, onToggle }: {
   question: string; answer: string; isOpen: boolean; onToggle: () => void;
 }) {
   return (
-    <div
-      className="rounded-2xl overflow-hidden transition-all duration-250"
+    <motion.div
+      layout
+      className="rounded-2xl overflow-hidden"
       style={{
-        background: isOpen ? "#FDF8F0" : "#FFFFFF",
-        border: isOpen ? "1px solid #E2C99A" : "1px solid #EAE2D6",
-        boxShadow: isOpen ? "0 4px 20px rgba(184,115,42,0.09)" : "0 1px 6px rgba(0,0,0,0.04)",
+        background: isOpen ? "#FAFAF8" : "#FFFFFF",
+        border: `1.5px solid ${isOpen ? "#E8C87A" : "#EBEBEB"}`,
+        transition: "border-color 0.25s ease, background 0.25s ease",
       }}
     >
-      <button
-        onClick={onToggle}
-        className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"
-        aria-expanded={isOpen}
-      >
-        <span
-          className="font-display font-semibold text-base leading-snug"
-          style={{ color: isOpen ? "#8B5218" : "#2E2520" }}
-        >
+      <button onClick={onToggle}
+        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left group"
+        aria-expanded={isOpen}>
+        <span className="text-sm font-semibold leading-snug transition-colors duration-200"
+          style={{ color: isOpen ? "#7A5A1E" : "#111111" }}>
           {question}
         </span>
-        <motion.div
-          animate={{ rotate: isOpen ? 45 : 0 }}
-          transition={{ duration: 0.22 }}
-          className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
+        <div className="shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-200"
           style={{
-            background: isOpen ? "#F5EBD8" : "#F4EFE6",
-            border: isOpen ? "1px solid #E2C99A" : "1px solid #E0D4C4",
-          }}
-        >
-          <Plus className="w-4 h-4" style={{ color: isOpen ? "#8B5218" : "#7A6B62" }} />
-        </motion.div>
+            background: isOpen ? "#FBF3E0" : "#F5F5F5",
+            border: `1px solid ${isOpen ? "#E8C87A" : "#E5E5E5"}`,
+          }}>
+          {isOpen
+            ? <Minus className="w-3.5 h-3.5" style={{ color: "#C9973E" }} />
+            : <Plus  className="w-3.5 h-3.5" style={{ color: "#555555" }} />}
+        </div>
       </button>
 
       <AnimatePresence initial={false}>
@@ -47,88 +46,78 @@ function FAQItem({ question, answer, isOpen, onToggle }: {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.28, ease: [0.04, 0.62, 0.23, 0.98] }}
+            transition={{ duration: 0.3, ease: EASE }}
           >
-            <div className="px-6 pb-6">
-              <div className="h-px mb-4" style={{ background: "#E2C99A" }} />
-              <p className="text-sm leading-relaxed" style={{ color: "#5A4A42" }}>{answer}</p>
+            <div className="px-5 pb-5 pt-1" style={{ borderTop: "1px solid #E8C87A" }}>
+              <p className="text-sm leading-relaxed" style={{ color: "#555555" }}>{answer}</p>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }
 
 export function FAQSection() {
   const [openId, setOpenId] = useState<string | null>("1");
+  const waUrl = getWhatsAppUrl(BRAND.whatsapp, "Hi MangoRoots! I have a question.");
 
   return (
-    <section id="faq" className="py-24 md:py-32" style={{ background: "#FFFFFF" }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+    <section id="faq" className="sec" style={{ background: "#FFFFFF", borderTop: "1px solid #F0F0F0" }}>
+      <div className="page-wrap">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-14">
 
-          {/* Left */}
-          <motion.div
-            initial={{ opacity: 0, x: -28 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55 }}
-            className="lg:sticky lg:top-28"
-          >
-            <span className="badge-premium mb-5 inline-flex">❓ FAQ</span>
-            <h2 className="heading-section mb-5" style={{ color: "#2E2520" }}>
-              Everything You{" "}
-              <span className="mango-gradient-text">Want to Know</span>
-            </h2>
-            <p className="text-body text-lg mb-8">
-              We believe in full transparency. Here are the most common questions — answered honestly.
-            </p>
-
-            <div className="space-y-3 mb-8">
-              {[
-                "✅ 100% naturally ripened — no chemicals",
-                "✅ USDA approved for US import",
-                "✅ 2–4 day fresh delivery",
-                "✅ WhatsApp support 8am–8pm daily",
-              ].map((text) => (
-                <div key={text} className="flex items-center gap-2.5">
-                  <span className="text-base">{text.split(" ")[0]}</span>
-                  <span className="text-sm" style={{ color: "#5A4A42" }}>{text.slice(3)}</span>
-                </div>
-              ))}
-            </div>
-
-            <p className="text-sm mb-3" style={{ color: "#9A8880" }}>Still have questions?</p>
-            <motion.a
-              href="https://wa.me/15550006264?text=Hi+MangoRoots!+I+have+a+question."
-              target="_blank" rel="noopener noreferrer"
-              whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full text-white text-sm font-semibold"
-              style={{ background: "#3aac6f", boxShadow: "0 4px 14px rgba(58,172,111,0.3)" }}
+          {/* Left — sticky sidebar */}
+          <div className="lg:sticky lg:top-24 lg:self-start">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }} transition={{ duration: 0.65, ease: EASE }}
             >
-              💬 Chat on WhatsApp
-            </motion.a>
-          </motion.div>
+              <span className="sec-num">06 — FAQ</span>
+              <span className="sec-label block mt-1">Got Questions?</span>
+              <h2 className="sec-heading mt-2 mb-4">Frequently Asked Questions</h2>
+              <p className="sec-body mb-6 mt-5">
+                Everything you want to know about our mangoes, delivery, and ordering.
+              </p>
 
-          {/* Right: accordion */}
-          <motion.div
-            initial={{ opacity: 0, x: 28 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55, delay: 0.1 }}
-            className="space-y-3"
-          >
-            {faqs.map((f) => (
-              <FAQItem
-                key={f.id}
-                question={f.question}
-                answer={f.answer}
-                isOpen={openId === f.id}
-                onToggle={() => setOpenId(openId === f.id ? null : f.id)}
-              />
+              <div className="rounded-2xl p-5 mb-6"
+                style={{ background: "#FAFAF8", border: "1.5px solid #E8C87A" }}>
+                {[
+                  "Naturally ripened — no chemicals",
+                  "USDA certified import",
+                  "2–4 day delivery",
+                  "WhatsApp support daily",
+                ].map(t => (
+                  <div key={t} className="flex items-center gap-2.5 text-sm py-2"
+                    style={{ color: "#15562B", borderBottom: "1px solid #F0F0F0" }}>
+                    <span style={{ color: "#C9973E" }}>✦</span> {t}
+                  </div>
+                ))}
+              </div>
+
+              <a href={waUrl} target="_blank" rel="noopener noreferrer"
+                className="btn btn-green inline-flex items-center gap-2 px-5 py-2.5 text-sm"
+              >
+                💬 Chat on WhatsApp
+              </a>
+            </motion.div>
+          </div>
+
+          {/* Accordion */}
+          <div className="lg:col-span-2 space-y-3">
+            {faqs.map((f, i) => (
+              <motion.div key={f.id}
+                initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.55, delay: i * 0.07, ease: EASE }}
+              >
+                <FAQItem question={f.question} answer={f.answer}
+                  isOpen={openId === f.id}
+                  onToggle={() => setOpenId(openId === f.id ? null : f.id)} />
+              </motion.div>
             ))}
-          </motion.div>
+          </div>
+
         </div>
       </div>
     </section>

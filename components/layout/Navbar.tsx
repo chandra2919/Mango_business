@@ -1,23 +1,22 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ShoppingBag } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Menu, X, ShoppingBag, Phone } from "lucide-react";
 import { BRAND } from "@/constants/branding";
 import { getWhatsAppUrl } from "@/lib/utils";
 
-const navLinks = [
-  { label: "Home",    href: "#home" },
-  { label: "Mangoes", href: "#varieties" },
-  { label: "About",   href: "#why-us" },
-  { label: "FAQ",     href: "#faq" },
-  { label: "Contact", href: "#contact" },
+const links = [
+  { label: "Home",     href: "#home"       },
+  { label: "Mangoes",  href: "#varieties"  },
+  { label: "Why Us",   href: "#why-us"     },
+  { label: "Delivery", href: "#delivery"   },
+  { label: "FAQ",      href: "#faq"        },
 ];
 
 export function Navbar() {
-  const [scrolled, setScrolled]   = useState(false);
-  const [menuOpen, setMenuOpen]   = useState(false);
-  const [activeLink, setActive]   = useState("home");
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen]         = useState(false);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
@@ -25,156 +24,125 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
-  }, [menuOpen]);
+  useEffect(() => { document.body.style.overflow = open ? "hidden" : ""; }, [open]);
 
   const go = (href: string) => {
-    setMenuOpen(false);
-    const id = href.replace("#", "");
-    setActive(id);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setOpen(false);
+    document.getElementById(href.replace("#", ""))?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const whatsappUrl = getWhatsAppUrl(BRAND.whatsapp, BRAND.whatsappMessage);
+  const waUrl = getWhatsAppUrl(BRAND.whatsapp, BRAND.whatsappMessage);
 
   return (
     <>
-      <motion.nav
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.55, ease: "easeOut" }}
+      <nav
         className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
         style={{
-          background: scrolled ? "rgba(253,252,249,0.96)" : "transparent",
-          backdropFilter: scrolled ? "blur(12px)" : "none",
-          borderBottom: scrolled ? "1px solid #EAE2D6" : "none",
+          background: scrolled ? "rgba(255,255,255,0.92)" : "rgba(255,255,255,1)",
+          backdropFilter: scrolled ? "blur(16px)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(16px)" : "none",
+          borderBottom: `1px solid ${scrolled ? "#EBEBEB" : "#F5F5F5"}`,
           boxShadow: scrolled ? "0 2px 20px rgba(0,0,0,0.06)" : "none",
         }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-10">
+          <div className="flex items-center justify-between h-16">
 
             {/* Logo */}
-            <motion.button
-              onClick={() => go("#home")}
-              whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2.5 cursor-pointer"
-            >
-              <div
-                className="w-9 h-9 rounded-xl flex items-center justify-center"
-                style={{
-                  background: "linear-gradient(135deg, #D4922A, #8B5218)",
-                  boxShadow: "0 2px 10px rgba(184,115,42,0.30)",
-                }}
-              >
-                <span className="text-lg">🥭</span>
-              </div>
-              <span className="font-display text-xl font-bold" style={{ color: "#2E2520" }}>
-                Mango<span style={{ color: "#B8732A" }}>Roots</span>
+            <button onClick={() => go("#home")} className="flex items-center gap-2 cursor-pointer group">
+              <span className="text-2xl group-hover:scale-110 transition-transform duration-200">🥭</span>
+              <span className="font-bold text-lg" style={{ fontFamily: "var(--font-poppins)", color: "#111111" }}>
+                Mango<span style={{ color: "#15562B" }}>Roots</span>
               </span>
-            </motion.button>
+            </button>
 
             {/* Desktop links */}
-            <div className="hidden md:flex items-center gap-1">
-              {navLinks.map((link) => {
-                const isActive = activeLink === link.href.replace("#", "");
-                return (
-                  <button
-                    key={link.href}
-                    onClick={() => go(link.href)}
-                    className="relative px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200"
-                    style={{ color: isActive ? "#8B5218" : "#5A4A42" }}
-                  >
-                    {link.label}
-                    {isActive && (
-                      <motion.div
-                        layoutId="nav-pill"
-                        className="absolute inset-0 rounded-full -z-10"
-                        style={{ background: "#F5EBD8", border: "1px solid #E2C99A" }}
-                        transition={{ type: "spring", stiffness: 320, damping: 32 }}
-                      />
-                    )}
-                  </button>
-                );
-              })}
+            <div className="hidden md:flex items-center gap-0.5">
+              {links.map(l => (
+                <button key={l.href} onClick={() => go(l.href)}
+                  className="relative px-4 py-2 text-sm font-medium rounded transition-all duration-200 group"
+                  style={{ color: "#555555" }}
+                  onMouseEnter={e => { e.currentTarget.style.color = "#111111"; }}
+                  onMouseLeave={e => { e.currentTarget.style.color = "#555555"; }}
+                >
+                  {l.label}
+                  {/* Gold underline on hover */}
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 w-0 group-hover:w-4/5 transition-all duration-300 rounded-full"
+                    style={{ background: "#C9973E" }} />
+                </button>
+              ))}
             </div>
 
-            {/* Order button */}
-            <div className="hidden md:flex items-center">
-              <motion.a
-                href={whatsappUrl}
-                target="_blank" rel="noopener noreferrer"
-                whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full text-white text-sm font-semibold"
-                style={{
-                  background: "#B8732A",
-                  boxShadow: "0 3px 14px rgba(184,115,42,0.30)",
-                }}
+            {/* CTAs */}
+            <div className="hidden md:flex items-center gap-3">
+              <a href={`tel:${BRAND.phone}`}
+                className="flex items-center gap-1.5 px-3 py-2 text-sm transition-colors duration-200"
+                style={{ color: "#555555" }}
+                onMouseEnter={e => (e.currentTarget.style.color = "#15562B")}
+                onMouseLeave={e => (e.currentTarget.style.color = "#555555")}
               >
-                <ShoppingBag className="w-4 h-4" />
-                Order Now
-              </motion.a>
+                <Phone className="w-3.5 h-3.5" style={{ color: "#C9973E" }} />
+                {BRAND.phone}
+              </a>
+              <a href={waUrl} target="_blank" rel="noopener noreferrer"
+                className="btn btn-green flex items-center gap-1.5 px-4 py-2 text-sm"
+              >
+                <ShoppingBag className="w-3.5 h-3.5" /> Order Now
+              </a>
             </div>
 
             {/* Mobile toggle */}
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden p-2 rounded-xl transition-colors"
-              style={{ color: "#5A4A42" }}
-              aria-label="Toggle menu"
+            <button onClick={() => setOpen(!open)}
+              className="md:hidden p-2 rounded-lg transition-colors"
+              style={{ background: open ? "#FBF3E0" : "transparent" }}
+              aria-label="Menu"
             >
-              <motion.div animate={{ rotate: menuOpen ? 90 : 0 }} transition={{ duration: 0.2 }}>
-                {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </motion.div>
+              {open
+                ? <X    className="w-5 h-5" style={{ color: "#111111" }} />
+                : <Menu className="w-5 h-5" style={{ color: "#111111" }} />}
             </button>
           </div>
         </div>
-      </motion.nav>
+      </nav>
 
       {/* Mobile menu */}
       <AnimatePresence>
-        {menuOpen && (
+        {open && (
           <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.22 }}
+            initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2, ease: "easeOut" }}
             className="fixed inset-x-0 top-16 z-40 md:hidden"
             style={{
-              background: "rgba(253,252,249,0.98)",
+              background: "rgba(255,255,255,0.97)",
               backdropFilter: "blur(16px)",
-              borderBottom: "1px solid #EAE2D6",
+              borderBottom: "1px solid #EBEBEB",
               boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
             }}
           >
-            <div className="px-4 py-6 space-y-1">
-              {navLinks.map((link, i) => (
+            <div className="px-5 py-5 space-y-1">
+              {links.map((l, i) => (
                 <motion.button
-                  key={link.href}
-                  initial={{ opacity: 0, x: -16 }}
+                  key={l.href} onClick={() => go(l.href)}
+                  initial={{ opacity: 0, x: -12 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  onClick={() => go(link.href)}
-                  className="w-full text-left px-4 py-3 rounded-xl text-base font-medium transition-colors"
-                  style={{ color: "#3A2E28" }}
-                  onMouseEnter={e => (e.currentTarget.style.background = "#F5EBD8")}
-                  onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+                  transition={{ delay: i * 0.05, duration: 0.2 }}
+                  className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200"
+                  style={{ color: "#111111" }}
+                  onMouseEnter={e => { e.currentTarget.style.background = "#FBF3E0"; e.currentTarget.style.color = "#7A5A1E"; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#111111"; }}
                 >
-                  {link.label}
+                  {l.label}
                 </motion.button>
               ))}
-              <div className="pt-3">
-                <a
-                  href={whatsappUrl}
-                  target="_blank" rel="noopener noreferrer"
-                  onClick={() => setMenuOpen(false)}
-                  className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl
-                             text-white font-semibold"
-                  style={{ background: "#B8732A", boxShadow: "0 3px 14px rgba(184,115,42,0.28)" }}
-                >
-                  <ShoppingBag className="w-4 h-4" />
-                  Order via WhatsApp
+              <div className="pt-4 flex flex-col gap-2.5">
+                <a href={`tel:${BRAND.phone}`}
+                  className="flex items-center justify-center gap-2 py-3 rounded-lg text-sm font-medium transition-colors"
+                  style={{ background: "#FBF3E0", border: "1px solid #E8C87A", color: "#7A5A1E" }}>
+                  <Phone className="w-4 h-4" /> {BRAND.phone}
+                </a>
+                <a href={waUrl} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}
+                  className="btn btn-green flex items-center justify-center gap-2 py-3 rounded-lg text-sm">
+                  <ShoppingBag className="w-4 h-4" /> Order via WhatsApp
                 </a>
               </div>
             </div>

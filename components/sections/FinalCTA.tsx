@@ -1,139 +1,82 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Phone, MessageCircle } from "lucide-react";
+import { Phone, MessageCircle, ShoppingBag } from "lucide-react";
 import { BRAND } from "@/constants/branding";
 import { getWhatsAppUrl, getCallUrl } from "@/lib/utils";
 
-const floating = [
-  { emoji: "🥭", x: "7%",  y: "18%", cls: "animate-float-1" },
-  { emoji: "🌿", x: "89%", y: "14%", cls: "animate-float-2" },
-  { emoji: "🥭", x: "84%", y: "68%", cls: "animate-float-3" },
-  { emoji: "⭐", x: "4%",  y: "74%", cls: "animate-float-1" },
-  { emoji: "🥭", x: "50%", y: "4%",  cls: "animate-float-2" },
-];
+const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
 export function FinalCTA() {
-  const whatsappUrl = getWhatsAppUrl(BRAND.whatsapp, BRAND.whatsappMessage);
-  const callUrl     = getCallUrl(BRAND.phone);
+  const waUrl   = getWhatsAppUrl(BRAND.whatsapp, BRAND.whatsappMessage);
+  const callUrl = getCallUrl(BRAND.phone);
 
   return (
-    <section
-      className="relative py-28 md:py-40 overflow-hidden"
-      style={{ background: "linear-gradient(160deg, #FDFCF9 0%, #FAF6EE 40%, #F5EDD8 75%, #EDE1C2 100%)" }}
-    >
-      {/* Soft radial */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 80% 55% at 50% 50%, rgba(184,115,42,0.09) 0%, transparent 70%)" }}
-      />
-
-      {/* Floating decorations */}
-      {floating.map((f, i) => (
-        <div key={i}
-          className={`absolute text-5xl select-none pointer-events-none opacity-20 ${f.cls}`}
-          style={{ left: f.x, top: f.y }}
-        >
-          {f.emoji}
-        </div>
-      ))}
-
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
-        {/* Badge */}
+    <section className="sec" style={{ background: "#FFFFFF", borderTop: "1px solid #F0F0F0" }}>
+      <div className="page-wrap">
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-8"
-          style={{ background: "#F5EBD8", color: "#8B5218", border: "1px solid #E2C99A" }}
+          initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.7, ease: EASE }}
+          className="text-center max-w-2xl mx-auto"
         >
-          <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#B8732A" }} />
-          Seasonal Stock Available Now
-        </motion.div>
+          {/* Gold decorative element */}
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="h-px flex-1 max-w-16" style={{ background: "linear-gradient(90deg, transparent, #E8C87A)" }} />
+            <span className="text-2xl">🥭</span>
+            <div className="h-px flex-1 max-w-16" style={{ background: "linear-gradient(90deg, #E8C87A, transparent)" }} />
+          </div>
 
-        {/* Headline */}
-        <motion.h2
-          initial={{ opacity: 0, y: 26 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="font-display font-bold leading-tight mb-6"
-          style={{ fontSize: "clamp(2.2rem, 5.5vw, 3.8rem)", color: "#2E2520" }}
-        >
-          Bring Home the Taste of
-          <br />
-          <span className="mango-gradient-text">Indian Summers</span>
-        </motion.h2>
+          <span className="sec-num block mb-2">07 — Order Today</span>
+          <span className="sec-label block mb-3">Don&rsquo;t Miss the Season</span>
+          <h2 className="sec-heading mx-auto text-center mb-5" style={{ display: "inline-block" }}>
+            Bring Home the Taste of Indian Summers
+          </h2>
+          <p className="sec-body mb-10 max-w-xl mx-auto mt-6">
+            Fresh seasonal mangoes available now. Don&rsquo;t let another mango season pass.
+            Order via WhatsApp or call us — we respond the same day.
+          </p>
 
-        <motion.p
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-lg sm:text-xl leading-relaxed max-w-xl mx-auto mb-12"
-          style={{ color: "#6B5C53" }}
-        >
-          Don&rsquo;t let another mango season pass without tasting the real thing.
-          Order now and let us deliver a piece of India straight to your family.
-        </motion.p>
+          {/* CTA buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
+            <a href={waUrl} target="_blank" rel="noopener noreferrer"
+              className="btn btn-whatsapp flex items-center gap-2 px-7 py-3.5 text-sm w-full sm:w-auto justify-center"
+            >
+              <MessageCircle className="w-4 h-4" /> Order on WhatsApp
+            </a>
+            <a href={callUrl}
+              className="btn btn-outline flex items-center gap-2 px-7 py-3.5 text-sm w-full sm:w-auto justify-center"
+            >
+              <Phone className="w-4 h-4" /> Call Us Now
+            </a>
+            <a href={waUrl} target="_blank" rel="noopener noreferrer"
+              className="btn btn-green flex items-center gap-2 px-7 py-3.5 text-sm w-full sm:w-auto justify-center"
+            >
+              <ShoppingBag className="w-4 h-4" /> Bulk Order
+            </a>
+          </div>
 
-        {/* CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10"
-        >
-          <motion.a
-            href={whatsappUrl}
-            target="_blank" rel="noopener noreferrer"
-            whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.96 }}
-            className="flex items-center justify-center gap-3 px-8 py-4 rounded-full
-                       text-white text-base font-bold w-full sm:w-auto"
-            style={{ background: "#3aac6f", boxShadow: "0 6px 24px rgba(58,172,111,0.32)" }}
+          {/* Trust strip */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3, ease: EASE }}
+            className="flex flex-wrap items-center justify-center gap-6 text-xs"
+            style={{ color: "#555555" }}
           >
-            <MessageCircle className="w-5 h-5" />
-            Order on WhatsApp
-          </motion.a>
-
-          <motion.a
-            href={callUrl}
-            whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}
-            className="flex items-center justify-center gap-3 px-8 py-4 rounded-full
-                       text-base font-bold border w-full sm:w-auto"
-            style={{
-              background: "#FFFFFF",
-              color: "#2E2520",
-              border: "1px solid #E0D4C4",
-              boxShadow: "0 2px 14px rgba(0,0,0,0.07)",
-            }}
-          >
-            <Phone className="w-5 h-5" style={{ color: "#B8732A" }} />
-            Call Us Now
-          </motion.a>
-        </motion.div>
-
-        {/* Trust notes */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
-          className="flex flex-wrap items-center justify-center gap-6 text-sm"
-          style={{ color: "#9A8880" }}
-        >
-          {[
-            { e: "✅", t: "No minimum order" },
-            { e: "🚚", t: "Fast 2–4 day delivery" },
-            { e: "🌿", t: "100% naturally ripened" },
-            { e: "⭐", t: "1000+ happy families" },
-          ].map(({ e, t }) => (
-            <div key={t} className="flex items-center gap-1.5">
-              <span>{e}</span><span>{t}</span>
-            </div>
-          ))}
+            {[
+              { e: "✅", t: "No minimum order"     },
+              { e: "🚚", t: "Fast 2–4 day delivery" },
+              { e: "🌿", t: "Naturally ripened"     },
+              { e: "⭐", t: "1000+ happy families"  },
+            ].map(({ e, t }) => (
+              <motion.span key={t}
+                whileHover={{ scale: 1.08, color: "#15562B" }}
+                transition={{ duration: 0.2 }}
+                className="flex items-center gap-1.5 cursor-default"
+              >
+                <span>{e}</span><span>{t}</span>
+              </motion.span>
+            ))}
+          </motion.div>
         </motion.div>
       </div>
     </section>

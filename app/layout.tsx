@@ -1,23 +1,28 @@
 import type { Metadata } from "next";
-import { Inter, Poppins, Manrope } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
+/* Inter — Oracle Sans equivalent: corporate, precise, readable body text */
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
 });
 
-const poppins = Poppins({
+/* Plus Jakarta Sans — Samsung Sharp Sans equivalent: modern geometric headings */
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700", "800"],
   variable: "--font-poppins",
   display: "swap",
 });
 
-const manrope = Manrope({
+/* Playfair Display — luxury editorial serif for section labels (same feel as Cormorant Garant) */
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-manrope",
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-cormorant",
   display: "swap",
 });
 
@@ -65,7 +70,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${poppins.variable} ${manrope.variable}`}
+      className={`${inter.variable} ${plusJakarta.variable} ${playfair.variable}`}
     >
       <body className="antialiased">{children}</body>
     </html>
