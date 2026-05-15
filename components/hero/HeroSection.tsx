@@ -336,27 +336,6 @@ export function HeroSection() {
         )}
       </div>
 
-      {/* ── Stats strip below carousel ─────────────────── */}
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-10">
-        <div className="grid grid-cols-3" style={{ borderBottom: "1px solid #F0F0F0" }}>
-          {[
-            { val: "800+", lbl: "Mangoes Per Weekend" },
-            { val: "6",    lbl: "Premium Varieties"   },
-            { val: "10+",  lbl: "US States Served"    },
-          ].map(({ val, lbl }, i) => (
-            <motion.div
-              key={lbl}
-              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 + i * 0.08, ease: EASE_CURVE }}
-              className="py-4 text-center px-1"
-              style={{ borderRight: i < 2 ? "1px solid #F0F0F0" : "none" }}
-            >
-              <p className="font-bold text-base sm:text-xl" style={{ fontFamily: "var(--font-poppins)", color: "#15562B" }}>{val}</p>
-              <p className="text-xs mt-0.5 leading-tight" style={{ color: "#888888" }}>{lbl}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
 
     </section>
   );
