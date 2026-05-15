@@ -4,26 +4,31 @@
 
 /*
   ══════════════════════════════════════════════════════════
-  LUXURY MANGO PALETTE — inspired by signatureeventsusa.com
-  & weddingsbyprasuna.com design language
+  PREMIUM MANGO PALETTE — warm tropical luxury
   ══════════════════════════════════════════════════════════
-  Page bg:          #FFFFFF  — clean pure white
-  Card bg:          #FAFAF8  — barely warm ivory
-  Gold accent:      #C9973E  — champagne gold (luxury label color)
-  Gold light:       #FBF3E0  — gold-tinted badge bg
-  Gold border:      #E8C87A  — gold card border
-  Deep green:       #15562B  — rich forest green (premium buttons)
-  Mid green:        #16A34A  — tag / icon accent
-  Green light:      #DCFCE7  — green badge bg
-  Text dark:        #111111
-  Text mid:         #555555
-  Text muted:       #888888
-  Border subtle:    #EBEBEB
+  Page bg:          #FFFDF7  — warm ivory white
+  Section warm:     #FFF8EC  — soft mango cream
+  Section green:    #E9F5EC  — fresh leaf tint
+  Card bg:          #FFFFFF  — pure white cards
+  Gold accent:      #F4A300  — vibrant mango gold
+  Gold warm:        #C9973E  — champagne gold
+  Gold light:       #FFE8B6  — pale gold tint
+  Gold lighter:     #FFF8EC  — barely-there gold bg
+  Gold border:      #F7C873  — warm gold border
+  Amber deep:       #7A4E1D  — rich amber text accent
+  Deep green:       #2D6A4F  — premium forest green (buttons)
+  Green accent:     #15562B  — deep anchor green
+  Green light:      #DDEFE4  — soft sage card tint
+  Green border:     #B7DEC8  — sage border
+  Text dark:        #1A1A1A
+  Text mid:         #4A4A4A
+  Text muted:       #7A7A7A
+  Border subtle:    #F0EDE6
 
   Fonts:
-    --font-cormorant  Cormorant Garant (luxury italic serif labels)
-    --font-poppins    Plus Jakarta Sans (Samsung-style geometric headings)
-    --font-inter      Inter (Oracle-style precise body text)
+    --font-cormorant  Playfair Display (luxury italic serif labels)
+    --font-poppins    Plus Jakarta Sans (premium geometric headings)
+    --font-inter      Inter (precision body text)
   ══════════════════════════════════════════════════════════
 */
 
@@ -33,8 +38,8 @@
   100% { left: 160%;  }
 }
 @keyframes gold-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(201,151,62,0.4); }
-  50%       { box-shadow: 0 0 0 8px rgba(201,151,62,0);  }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(244,163,0,0.35); }
+  50%       { box-shadow: 0 0 0 10px rgba(244,163,0,0);  }
 }
 @keyframes bar-grow {
   from { transform: scaleX(0); }
@@ -42,7 +47,11 @@
 }
 @keyframes float-soft {
   0%, 100% { transform: translateY(0px);   }
-  50%       { transform: translateY(-6px);  }
+  50%       { transform: translateY(-7px);  }
+}
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg);   }
+  50%       { transform: translateY(-10px) rotate(3deg); }
 }
 @keyframes fade-in-up {
   from { opacity: 0; transform: translateY(40px); }
@@ -50,31 +59,53 @@
 }
 @keyframes line-grow {
   from { width: 0; }
-  to   { width: 48px; }
+  to   { width: 52px; }
+}
+@keyframes warm-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(247,200,115,0.45); }
+  50%       { box-shadow: 0 0 0 12px rgba(247,200,115,0); }
 }
 
 /* ── CSS Variables ───────────────────────────────────── */
 @layer base {
   :root {
-    --gold:          #C9973E;
-    --gold-light:    #FBF3E0;
-    --gold-border:   #E8C87A;
-    --green-deep:    #15562B;
-    --green-mid:     #16A34A;
-    --green-light:   #DCFCE7;
-    --green-border:  #BBF7D0;
+    /* Brand palette */
+    --gold:           #F4A300;
+    --gold-warm:      #C9973E;
+    --gold-light:     #FFE8B6;
+    --gold-lighter:   #FFF8EC;
+    --gold-border:    #F7C873;
+    --gold-border-soft: #F0E0A8;
+    --amber-deep:     #7A4E1D;
+    --green-deep:     #2D6A4F;
+    --green-anchor:   #15562B;
+    --green-light:    #DDEFE4;
+    --green-border:   #B7DEC8;
 
-    --background: 0 0% 100%;
-    --foreground: 0 0% 7%;
+    /* Page backgrounds */
+    --bg-page:        #FFFDF7;
+    --bg-warm:        #FFF8EC;
+    --bg-sage:        #E9F5EC;
+    --bg-card:        #FFFFFF;
+
+    /* Typography */
+    --text-dark:      #1A1A1A;
+    --text-mid:       #4A4A4A;
+    --text-muted:     #7A7A7A;
+    --border-subtle:  #F0EDE6;
+
+    /* Tailwind compat */
+    --background: 48 100% 99%;
+    --foreground: 0 0% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 7%;
-    --border: 0 0% 92%;
-    --input:  0 0% 92%;
-    --ring:   142 60% 25%;
+    --card-foreground: 0 0% 10%;
+    --border: 40 30% 92%;
+    --input:  40 30% 92%;
+    --ring:   152 40% 30%;
     --radius: 0.5rem;
-    --primary: 142 60% 25%;
+    --primary: 152 40% 30%;
     --primary-foreground: 0 0% 100%;
-    --muted: 0 0% 97%;
+    --muted: 48 60% 97%;
     --muted-foreground: 0 0% 45%;
   }
 }
@@ -86,13 +117,13 @@
   html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 
   body {
-    background: #FFFFFF;
-    color: #111111;
+    background: #FFFDF7;
+    color: #1A1A1A;
     font-family: var(--font-inter), system-ui, sans-serif;
     overflow-x: hidden;
   }
 
-  ::selection { background: #FBF3E0; color: #111111; }
+  ::selection { background: #FFE8B6; color: #1A1A1A; }
 }
 
 /* ── Layout ──────────────────────────────────────────── */
@@ -100,38 +131,42 @@
   .page-wrap { @apply max-w-6xl mx-auto px-5 sm:px-8 lg:px-10; }
   .sec       { @apply py-20 md:py-28; }
 
-  /* ── Section label — Cormorant Garant italic serif (luxury style) */
+  /* ── Warm section backgrounds ──────────────────────── */
+  .sec-bg-warm  { background: linear-gradient(160deg, #FFFDF7 0%, #FFF8EC 100%); }
+  .sec-bg-sage  { background: linear-gradient(160deg, #F2FAF5 0%, #E9F5EC 100%); }
+  .sec-bg-ivory { background: #FFFDF7; }
+
+  /* ── Section label — Playfair Display italic serif */
   .sec-label {
     font-family: var(--font-cormorant), Georgia, serif;
     font-style: italic;
     font-weight: 600;
     font-size: 1.05rem;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.04em;
     color: #C9973E;
     display: flex;
     align-items: center;
     gap: 10px;
     margin-bottom: 0.75rem;
   }
-  /* Gold dash after label */
   .sec-label::after {
     content: '';
     display: inline-block;
-    width: 32px;
+    width: 36px;
     height: 1.5px;
-    background: linear-gradient(90deg, #C9973E, transparent);
+    background: linear-gradient(90deg, #F4A300, transparent);
     border-radius: 2px;
     flex-shrink: 0;
   }
 
-  /* ── Section number badge (01 / 02 style from reference sites) */
+  /* ── Section number badge */
   .sec-num {
     display: inline-block;
     font-family: var(--font-cormorant), serif;
     font-style: italic;
     font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.18em;
     color: #C9973E;
     text-transform: uppercase;
     margin-bottom: 0.5rem;
@@ -141,144 +176,162 @@
   .sec-heading {
     font-family: var(--font-poppins), system-ui, sans-serif;
     @apply text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight leading-snug;
-    color: #111111;
+    color: #1A1A1A;
     position: relative;
-    padding-bottom: 18px;
+    padding-bottom: 20px;
     margin-bottom: 0;
   }
-  /* Gold + green underline accent */
   .sec-heading::after {
     content: '';
     position: absolute;
     bottom: 0; left: 0;
     width: 0;
-    height: 2.5px;
-    background: linear-gradient(90deg, #C9973E 0%, #15562B 100%);
-    border-radius: 2px;
+    height: 3px;
+    background: linear-gradient(90deg, #F4A300 0%, #2D6A4F 100%);
+    border-radius: 3px;
     animation: line-grow 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s both;
   }
 
   /* ── Body text */
-  .sec-body { @apply text-base leading-relaxed; color: #555555; }
+  .sec-body { @apply text-base leading-relaxed; color: #4A4A4A; }
 
   /* ── Buttons ─────────────────────────────────────── */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded font-semibold text-sm cursor-pointer;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm cursor-pointer;
     position: relative;
     overflow: hidden;
-    transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+    transition: background 0.25s ease, transform 0.22s ease, box-shadow 0.25s ease;
   }
-  /* Shimmer sweep on all buttons */
   .btn::after {
     content: '';
     position: absolute;
     top: 0; left: -100%;
     width: 55%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.28), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.30), transparent);
     transform: skewX(-15deg);
   }
-  .btn:hover::after {
-    animation: shimmer-sweep 0.55s ease forwards;
-  }
-  .btn:hover { transform: translateY(-2px); }
+  .btn:hover::after  { animation: shimmer-sweep 0.55s ease forwards; }
+  .btn:hover  { transform: translateY(-2px); }
   .btn:active { transform: translateY(0); }
 
-  /* Deep forest green — primary */
+  /* Premium forest green */
   .btn-green {
     @apply btn text-white;
-    background: #15562B;
-    box-shadow: 0 2px 10px rgba(21,86,43,0.30);
+    background: #2D6A4F;
+    box-shadow: 0 4px 16px rgba(45,106,79,0.28);
   }
   .btn-green:hover {
-    background: #0D3D1E;
-    box-shadow: 0 6px 20px rgba(21,86,43,0.35);
+    background: #1E4D38;
+    box-shadow: 0 8px 28px rgba(45,106,79,0.38);
   }
 
-  /* Amber — secondary */
+  /* Mango gold */
   .btn-amber {
     @apply btn text-white;
-    background: #C9973E;
-    box-shadow: 0 2px 10px rgba(201,151,62,0.30);
+    background: #F4A300;
+    box-shadow: 0 4px 16px rgba(244,163,0,0.30);
   }
   .btn-amber:hover {
-    background: #A87D2E;
-    box-shadow: 0 6px 20px rgba(201,151,62,0.35);
+    background: #D48F00;
+    box-shadow: 0 8px 28px rgba(244,163,0,0.40);
   }
 
-  /* Gold outline */
+  /* Warm outline */
   .btn-outline {
     @apply btn bg-white;
-    color: #15562B;
-    border: 1.5px solid #C9973E;
+    color: #2D6A4F;
+    border: 1.5px solid #F4A300;
   }
   .btn-outline:hover {
-    background: #FBF3E0;
-    border-color: #A87D2E;
+    background: #FFF8EC;
+    border-color: #C9973E;
   }
 
-  /* WhatsApp */
+  /* WhatsApp — bold primary */
   .btn-whatsapp {
     @apply btn text-white;
     background: #25D366;
+    box-shadow: 0 4px 16px rgba(37,211,102,0.30);
   }
-  .btn-whatsapp:hover { background: #1DAE53; }
+  .btn-whatsapp:hover {
+    background: #1DAE53;
+    box-shadow: 0 8px 28px rgba(37,211,102,0.40);
+  }
 
   /* ── Cards ───────────────────────────────────────── */
   .card {
-    @apply bg-white rounded-xl overflow-hidden;
-    border: 1px solid #EBEBEB;
-    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-                box-shadow 0.35s ease;
+    @apply bg-white overflow-hidden;
+    border-radius: 22px;
+    border: 1px solid #F0EDE6;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.38s ease;
   }
   .card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 24px 48px rgba(0,0,0,0.10), 0 8px 16px rgba(0,0,0,0.05);
+    box-shadow: 0 20px 48px rgba(0,0,0,0.09), 0 6px 16px rgba(0,0,0,0.04);
   }
 
   .card-lift {
-    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-                box-shadow 0.35s ease;
+    transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.38s ease;
   }
   .card-lift:hover {
     transform: translateY(-8px);
-    box-shadow: 0 24px 48px rgba(0,0,0,0.10), 0 8px 16px rgba(0,0,0,0.05);
+    box-shadow: 0 20px 48px rgba(0,0,0,0.09), 0 6px 16px rgba(0,0,0,0.04);
+  }
+
+  /* Premium warm card lift (gold glow on hover) */
+  .card-warm {
+    border-radius: 22px;
+    border: 1.5px solid #F7C873;
+    background: #FFFFFF;
+    box-shadow: 0 4px 20px rgba(247,200,115,0.12);
+    transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.38s ease;
+  }
+  .card-warm:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 48px rgba(244,163,0,0.14), 0 4px 16px rgba(247,200,115,0.20);
   }
 
   /* ── Tags ────────────────────────────────────────── */
   .tag-yellow {
-    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-semibold;
-    background: #FBF3E0;
-    color: #92400E;
-    border: 1px solid #E8C87A;
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-xs font-semibold;
+    background: #FFE8B6;
+    color: #7A4E1D;
+    border: 1px solid #F7C873;
   }
   .tag-green {
-    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-semibold;
-    background: #DCFCE7;
-    color: #166534;
-    border: 1px solid #BBF7D0;
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-xs font-semibold;
+    background: #DDEFE4;
+    color: #1E4D38;
+    border: 1px solid #B7DEC8;
   }
   .tag-gold {
-    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-semibold;
-    background: #FBF3E0;
-    color: #7A5A1E;
-    border: 1px solid #E8C87A;
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-xs font-semibold;
+    background: #FFF8EC;
+    color: #7A4E1D;
+    border: 1px solid #F7C873;
   }
 
-  /* ── Section divider line ────────────────────────── */
+  /* ── Section divider ─────────────────────────────── */
   .divider-gold {
     width: 100%;
     height: 1px;
-    background: linear-gradient(90deg, transparent, #E8C87A 30%, #E8C87A 70%, transparent);
+    background: linear-gradient(90deg, transparent, #F7C873 30%, #F7C873 70%, transparent);
   }
 }
 
 /* ── Utilities ───────────────────────────────────────── */
 @layer utilities {
-  .text-balance   { text-wrap: balance; }
-  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .text-balance        { text-wrap: balance; }
+  .scrollbar-hide      { -ms-overflow-style: none; scrollbar-width: none; }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
-  .animate-float  { animation: float-soft 3s ease-in-out infinite; }
-  .animate-gold-pulse { animation: gold-pulse 2s ease-in-out infinite; }
+  .animate-float       { animation: float-soft 3.5s ease-in-out infinite; }
+  .animate-float-slow  { animation: float-slow 5s ease-in-out infinite; }
+  .animate-gold-pulse  { animation: gold-pulse 2.5s ease-in-out infinite; }
+  .animate-warm-glow   { animation: warm-glow 2.5s ease-in-out infinite; }
 }
 
 /* ═══════════════════════════════════════════════════════
