@@ -49,13 +49,13 @@ export function FinalCTA() {
       />
 
       {/* ── Content ────────────────────────────────────────── */}
-      <div className="relative sec page-wrap" style={{ zIndex: 10 }}>
+      <div className="relative sec page-wrap flex flex-col items-center" style={{ zIndex: 10 }}>
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: EASE }}
-          className="text-center max-w-2xl mx-auto"
+          className="text-center w-full max-w-2xl"
         >
           {/* Ornamental gold rule */}
           <div className="flex items-center justify-center gap-3 mb-6">
@@ -109,7 +109,7 @@ export function FinalCTA() {
 
           {/* Subtitle */}
           <p
-            className="mb-10 leading-relaxed mx-auto"
+            className="mb-10 leading-relaxed mx-auto text-center"
             style={{ fontSize: "1rem", color: "#4A4A4A", maxWidth: "440px" }}
           >
             Fresh seasonal mangoes available now. Don&rsquo;t let another mango season
