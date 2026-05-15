@@ -1,4 +1,3 @@
-import { LoadingIntro } from "@/components/ui/LoadingIntro";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
@@ -16,7 +15,6 @@ import { FinalCTA } from "@/components/sections/FinalCTA";
 export default function Home() {
   return (
     <>
-      <LoadingIntro />
       <ScrollProgress />
       <Navbar />
       <main>

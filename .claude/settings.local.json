@@ -7,7 +7,13 @@
       "Bash(ls -la \"C:\\\\Users\\\\KANNA\\\\Downloads\\\\mango business\\\\\" | head -20)",
       "Bash(git commit -m ' *)",
       "Bash(git tag *)",
-      "Bash(git reset *)"
+      "Bash(git reset *)",
+      "Bash(git commit -m 'fix: cube rotation speed 3.6s → 2.6s *)",
+      "Bash(git commit -m 'fix: cube rotation speed 2.6s → 0.6s *)",
+      "Bash(git commit -m 'fix: cube rotation speed set to 1.8s \\(balanced\\) *)",
+      "Bash(git commit -m 'fix: cube rotation 1.8s linear → 3.8s ease-in-out \\(slower, smoother\\) *)",
+      "Bash(rm components/ui/LoadingIntro.tsx)",
+      "Bash(git commit -m 'remove: delete loading intro screen completely *)"
     ]
   }
 }
