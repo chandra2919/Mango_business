@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+
+  <!-- Rounded square background — deep forest green -->
+  <rect width="32" height="32" rx="7" fill="#2D6A4F"/>
+
+  <!-- Subtle inner vignette for depth -->
+  <rect width="32" height="32" rx="7" fill="url(#vignette)" opacity="0.25"/>
+
+  <!-- Mango body — tilted ellipse, natural mango silhouette -->
+  <ellipse
+    cx="16" cy="18"
+    rx="7.5" ry="9.2"
+    fill="url(#mangoGrad)"
+    transform="rotate(-7 16 18)"
+  />
+
+  <!-- Mango inner highlight — soft warm glow on the belly -->
+  <ellipse
+    cx="13.2" cy="15.5"
+    rx="2.2" ry="3.2"
+    fill="#FFE566"
+    opacity="0.32"
+    transform="rotate(-18 13.2 15.5)"
+  />
+
+  <!-- Thin blush shadow on the right side of mango -->
+  <ellipse
+    cx="19.5" cy="19"
+    rx="1.8" ry="3.5"
+    fill="#C97A00"
+    opacity="0.18"
+    transform="rotate(-7 19.5 19)"
+  />
+
+  <!-- Stem -->
+  <path
+    d="M15.8 8.8 Q15.4 6.8 15.2 5.6"
+    stroke="#A5D6A7"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    fill="none"
+  />
+
+  <!-- Leaf — elegant curved teardrop -->
+  <path
+    d="M15.2 5.6 C17 3.2 22 3.5 21 7.2 C19.5 8.5 16.5 7.8 15.2 5.6 Z"
+    fill="#66BB6A"
+  />
+
+  <!-- Leaf midrib vein -->
+  <path
+    d="M15.2 5.6 C17.5 5.8 19.5 6.2 21 7.2"
+    stroke="#2D6A4F"
+    stroke-width="0.6"
+    stroke-linecap="round"
+    fill="none"
+    opacity="0.5"
+  />
+
+  <!-- Gradient definitions -->
+  <defs>
+    <!-- Mango: warm gold base → rich amber at bottom -->
+    <radialGradient id="mangoGrad" cx="40%" cy="38%" r="62%" fx="38%" fy="35%">
+      <stop offset="0%"   stop-color="#FFD042"/>
+      <stop offset="45%"  stop-color="#F4A300"/>
+      <stop offset="100%" stop-color="#D4800A"/>
+    </radialGradient>
+
+    <!-- Subtle dark vignette on background -->
+    <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+      <stop offset="0%"   stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="1"/>
+    </radialGradient>
+  </defs>
+
+</svg>

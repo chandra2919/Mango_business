@@ -42,6 +42,13 @@ export const metadata: Metadata = {
     "Mallika mango",
     "premium Indian mangoes",
   ],
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
   openGraph: {
     title: "MangoRoots — Authentic Indian Mangoes Delivered Fresh in the USA",
     description:
