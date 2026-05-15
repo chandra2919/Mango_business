@@ -20,8 +20,8 @@ const col2 = [
 export function Footer() {
   return (
     <footer id="contact" style={{ background: "#FAFAF8", borderTop: "1px solid #E8C87A" }}>
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-10 py-14">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 lg:px-10 py-10 sm:py-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
 
           {/* Brand */}
           <div>
@@ -42,7 +42,7 @@ export function Footer() {
                 { Icon: Youtube,   href: BRAND.social.youtube   },
               ].map(({ Icon, href }) => (
                 <a key={href} href={href} target="_blank" rel="noopener noreferrer"
-                  className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200"
+                  className="w-11 h-11 rounded-lg flex items-center justify-center transition-all duration-200"
                   style={{ background: "#FFFFFF", color: "#888888", border: "1px solid #EBEBEB" }}
                   onMouseEnter={e => { e.currentTarget.style.background = "#FBF3E0"; e.currentTarget.style.color = "#C9973E"; e.currentTarget.style.borderColor = "#E8C87A"; }}
                   onMouseLeave={e => { e.currentTarget.style.background = "#FFFFFF"; e.currentTarget.style.color = "#888888"; e.currentTarget.style.borderColor = "#EBEBEB"; }}

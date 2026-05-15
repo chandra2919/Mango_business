@@ -109,7 +109,7 @@ export function HeroSection() {
       <motion.div
         initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE_CURVE }}
-        className="py-2.5 text-center text-xs font-semibold tracking-wide"
+        className="py-2 text-center text-xs font-semibold tracking-wide px-3 leading-5"
         style={{
           background: "linear-gradient(90deg, #FBF3E0 0%, #FEF9F0 50%, #FBF3E0 100%)",
           borderBottom: "1px solid #E8C87A",
@@ -122,7 +122,7 @@ export function HeroSection() {
       {/* ── Full-width carousel ─────────────────────────── */}
       <div
         className="relative w-full overflow-hidden select-none"
-        style={{ height: "clamp(340px, 52vw, 600px)" }}
+        style={{ height: "clamp(300px, 52vw, 600px)" }}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
@@ -160,7 +160,7 @@ export function HeroSection() {
 
         {/* ── Text overlay ───────────────────────────────── */}
         <div className="absolute inset-0 flex items-center z-10">
-          <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-14 w-full">
+          <div className="max-w-6xl mx-auto px-4 sm:px-10 lg:px-14 w-full">
             <div className="max-w-lg">
               <AnimatePresence mode="wait">
                 <motion.div
@@ -230,18 +230,18 @@ export function HeroSection() {
                   </motion.p>
 
                   {/* CTA buttons */}
-                  <motion.div variants={textItem} className="flex flex-wrap gap-3">
+                  <motion.div variants={textItem} className="flex flex-col sm:flex-row flex-wrap gap-3">
                     <a
                       href={waUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="btn btn-green flex items-center gap-2 px-6 py-3 text-sm"
+                      className="btn btn-green flex items-center justify-center gap-2 px-6 py-3 text-sm w-full sm:w-auto"
                     >
                       <ShoppingBag className="w-4 h-4" /> Order on WhatsApp
                     </a>
                     <a
                       href={callUrl}
-                      className="flex items-center gap-2 px-6 py-3 rounded text-sm font-semibold transition-all duration-200"
+                      className="flex items-center justify-center gap-2 px-6 py-3 rounded text-sm font-semibold transition-all duration-200 w-full sm:w-auto"
                       style={{
                         background: "rgba(255,255,255,0.12)",
                         backdropFilter: "blur(10px)",
@@ -267,7 +267,7 @@ export function HeroSection() {
         <button
           onClick={prev}
           aria-label="Previous slide"
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center rounded-full transition-all duration-200"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 hidden sm:flex items-center justify-center rounded-full transition-all duration-200"
           style={{
             width: "46px", height: "46px",
             background: "rgba(255,255,255,0.14)",
@@ -284,7 +284,7 @@ export function HeroSection() {
         <button
           onClick={next}
           aria-label="Next slide"
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center rounded-full transition-all duration-200"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 hidden sm:flex items-center justify-center rounded-full transition-all duration-200"
           style={{
             width: "46px", height: "46px",
             background: "rgba(255,255,255,0.14)",
@@ -348,11 +348,11 @@ export function HeroSection() {
               key={lbl}
               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 + i * 0.08, ease: EASE_CURVE }}
-              className="py-5 text-center"
+              className="py-4 text-center px-1"
               style={{ borderRight: i < 2 ? "1px solid #F0F0F0" : "none" }}
             >
-              <p className="font-bold text-xl" style={{ fontFamily: "var(--font-poppins)", color: "#15562B" }}>{val}</p>
-              <p className="text-xs mt-0.5" style={{ color: "#888888" }}>{lbl}</p>
+              <p className="font-bold text-base sm:text-xl" style={{ fontFamily: "var(--font-poppins)", color: "#15562B" }}>{val}</p>
+              <p className="text-xs mt-0.5 leading-tight" style={{ color: "#888888" }}>{lbl}</p>
             </motion.div>
           ))}
         </div>

@@ -62,7 +62,7 @@ export function Testimonials() {
               <motion.div key={`${t.id}-${cur}-${i}`}
                 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4, delay: i * 0.08, ease: EASE }}
-                className="card-lift rounded-2xl p-6 cursor-default"
+                className={`card-lift rounded-2xl p-5 sm:p-6 cursor-default ${i > 0 ? "hidden md:block" : ""}`}
                 style={{ background: cardStyles[i].bg, border: `1.5px solid ${cardStyles[i].border}` }}
               >
                 <Stars n={t.rating} />
@@ -90,7 +90,7 @@ export function Testimonials() {
         {/* Navigation */}
         <div className="flex items-center gap-4">
           <button onClick={prev}
-            className="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-110"
+            className="w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-110"
             style={{ background: "#FBF3E0", border: "1.5px solid #E8C87A" }}>
             <ChevronLeft className="w-4 h-4" style={{ color: "#7A5A1E" }} />
           </button>
@@ -105,7 +105,7 @@ export function Testimonials() {
             ))}
           </div>
           <button onClick={next}
-            className="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-110"
+            className="w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-110"
             style={{ background: "#FBF3E0", border: "1.5px solid #E8C87A" }}>
             <ChevronRight className="w-4 h-4" style={{ color: "#7A5A1E" }} />
           </button>

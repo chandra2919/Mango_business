@@ -263,10 +263,10 @@ export function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.96 }}
             transition={{ duration: 0.28, ease: EASE }}
-            className="fixed bottom-24 right-5 z-50 flex flex-col"
+            className="fixed bottom-20 right-3 sm:bottom-24 sm:right-5 z-50 flex flex-col"
             style={{
-              width: "clamp(320px, 90vw, 380px)",
-              height: "clamp(460px, 70vh, 520px)",
+              width: "clamp(300px, 92vw, 380px)",
+              height: "clamp(380px, 75vh, 520px)",
               borderRadius: "22px",
               background: "#FFFDF7",
               border: "1.5px solid #F7C873",
@@ -613,7 +613,7 @@ export function ChatWidget() {
       <motion.button
         onClick={() => setOpen(o => !o)}
         aria-label={open ? "Close chat" : "Open chat"}
-        className="fixed bottom-5 right-5 z-50 flex items-center justify-center"
+        className="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-50 flex items-center justify-center"
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.94 }}
         style={{

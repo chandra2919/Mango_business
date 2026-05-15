@@ -129,7 +129,7 @@ export function WhyChooseUs() {
                   background: "rgba(255,255,255,0.82)",
                   backdropFilter: "blur(12px)",
                   WebkitBackdropFilter: "blur(12px)",
-                  padding: "1.75rem 1.75rem 2rem",
+                  padding: "clamp(1.1rem,3vw,1.75rem) clamp(1rem,3vw,1.75rem) clamp(1.25rem,3vw,2rem)",
                   boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
                   transition: "box-shadow 0.35s ease",
                 }}

@@ -110,7 +110,7 @@ export function FinalCTA() {
           {/* Subtitle */}
           <p
             className="mb-10 leading-relaxed mx-auto text-center"
-            style={{ fontSize: "1rem", color: "#4A4A4A", maxWidth: "440px" }}
+            style={{ fontSize: "clamp(0.9rem,2.5vw,1rem)", color: "#4A4A4A", maxWidth: "min(440px,100%)" }}
           >
             Fresh seasonal mangoes available now. Don&rsquo;t let another mango season
             pass without bringing home the real taste of India.

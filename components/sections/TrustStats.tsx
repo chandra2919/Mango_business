@@ -98,7 +98,7 @@ export function TrustStats() {
                 borderRadius: "20px",
                 border: `1.5px solid ${s.border}`,
                 background: "#FFFFFF",
-                padding: s.featured ? "2.25rem 1.5rem 2.5rem" : "2rem 1.5rem 2.25rem",
+                padding: s.featured ? "clamp(1.25rem,3vw,2.25rem) 1rem clamp(1.5rem,3vw,2.5rem)" : "clamp(1rem,2.5vw,2rem) 1rem clamp(1.25rem,2.5vw,2.25rem)",
                 boxShadow: s.featured
                   ? "0 8px 32px rgba(244,163,0,0.10), 0 2px 8px rgba(0,0,0,0.03)"
                   : "0 2px 16px rgba(0,0,0,0.04)",
@@ -137,7 +137,7 @@ export function TrustStats() {
                 className="font-extrabold mb-2"
                 style={{
                   fontFamily: "var(--font-poppins)",
-                  fontSize: s.featured ? "2.8rem" : "2.4rem",
+                  fontSize: s.featured ? "clamp(1.8rem,5vw,2.8rem)" : "clamp(1.6rem,4.5vw,2.4rem)",
                   lineHeight: 1,
                   color: s.numColor,
                   letterSpacing: "-0.04em",

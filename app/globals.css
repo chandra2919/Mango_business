@@ -128,8 +128,8 @@
 
 /* ── Layout ──────────────────────────────────────────── */
 @layer components {
-  .page-wrap { @apply max-w-6xl mx-auto px-5 sm:px-8 lg:px-10; }
-  .sec       { @apply py-20 md:py-28; }
+  .page-wrap { @apply max-w-6xl mx-auto px-4 sm:px-8 lg:px-10; }
+  .sec       { @apply py-12 md:py-20 lg:py-28; }
 
   /* ── Warm section backgrounds ──────────────────────── */
   .sec-bg-warm  { background: linear-gradient(160deg, #FFFDF7 0%, #FFF8EC 100%); }
@@ -175,7 +175,7 @@
   /* ── Section heading */
   .sec-heading {
     font-family: var(--font-poppins), system-ui, sans-serif;
-    @apply text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight leading-snug;
+    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight leading-snug;
     color: #1A1A1A;
     position: relative;
     padding-bottom: 20px;
@@ -197,7 +197,8 @@
 
   /* ── Buttons ─────────────────────────────────────── */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm cursor-pointer;
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm cursor-pointer;
+    min-height: 44px; /* accessibility touch target */
     position: relative;
     overflow: hidden;
     transition: background 0.25s ease, transform 0.22s ease, box-shadow 0.25s ease;

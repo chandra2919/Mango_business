@@ -93,7 +93,7 @@ export function Navbar() {
 
             {/* Mobile toggle */}
             <button onClick={() => setOpen(!open)}
-              className="md:hidden p-2 rounded-lg transition-colors"
+              className="md:hidden p-2.5 rounded-lg transition-colors"
               style={{ background: open ? "#FBF3E0" : "transparent" }}
               aria-label="Menu"
             >

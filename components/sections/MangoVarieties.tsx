@@ -59,7 +59,7 @@ function MangoCard({ mango, index }: { mango: MangoVariety; index: number }) {
       >
         {/* ── slide1: IMAGE PANEL ── translateY(36px) → 0 on hover */}
         <div className="ms1">
-          <div className="relative w-full h-52 overflow-hidden rounded-t-2xl">
+          <div className="relative w-full h-44 sm:h-52 overflow-hidden rounded-t-2xl">
 
             {/*
               zoom-out driven by CSS class .mango-card-img
@@ -186,7 +186,7 @@ function MangoCard({ mango, index }: { mango: MangoVariety; index: number }) {
           </div>
 
           <a href={orderUrl} target="_blank" rel="noopener noreferrer"
-            className="btn btn-green block w-full text-center py-2.5 text-sm"
+            className="btn btn-green block w-full text-center py-3 text-sm"
           >
             Order {mango.name}
           </a>
