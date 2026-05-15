@@ -410,7 +410,7 @@
   height: 120px;
   position: relative;
   transform-style: preserve-3d;
-  animation: rotate3d 1.8s linear infinite;
+  animation: rotate3d 3.8s ease-in-out infinite;
 }
 
 .intro-face {
