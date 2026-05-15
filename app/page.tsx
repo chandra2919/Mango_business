@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { ChatWidget } from "@/components/ui/ChatWidget";
 import { HeroSection } from "@/components/hero/HeroSection";
 import { TrustStats } from "@/components/sections/TrustStats";
 import { MangoVarieties } from "@/components/sections/MangoVarieties";
@@ -28,6 +29,7 @@ export default function Home() {
         <FinalCTA />
       </main>
       <Footer />
+      <ChatWidget />
     </>
   );
 }
