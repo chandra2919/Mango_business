@@ -9,55 +9,49 @@ const features = [
     n: "01",
     title: "Farm-Direct Sourcing",
     desc: "Sourced directly from trusted orchards in Andhra Pradesh, Maharashtra & Gujarat — no middlemen, no cold-chain delays.",
-    border: "#F7C873",
-    numColor: "#F4A300",
-    barColor: "linear-gradient(90deg, #F4A300, #C9973E)",
-    bg: "#FFFFFF",
+    border: "#B7DEC8",
+    numColor: "#2D6A4F",
+    barColor: "linear-gradient(90deg, #2D6A4F, #B7DEC8)",
   },
   {
     n: "02",
     title: "Air-Flown, Not Sea Freight",
     desc: "We airlift mangoes so they arrive in days, not weeks. Every box is freshness-first — quality is never compromised for cost.",
-    border: "#B7DEC8",
-    numColor: "#2D6A4F",
-    barColor: "linear-gradient(90deg, #2D6A4F, #B7DEC8)",
-    bg: "#FFFFFF",
+    border: "#F7C873",
+    numColor: "#C9973E",
+    barColor: "linear-gradient(90deg, #C9973E, #F7C873)",
   },
   {
     n: "03",
     title: "USDA Approved & Certified",
-    desc: "Every shipment is fully USDA inspected and compliant. You can trust what arrives at your door is safe, clean, and authentic.",
-    border: "#F7C873",
-    numColor: "#F4A300",
-    barColor: "linear-gradient(90deg, #F4A300, #C9973E)",
-    bg: "#FFFFFF",
+    desc: "All imports fully USDA inspected and compliant with US agricultural import regulations.",
+    border: "#B7DEC8",
+    numColor: "#2D6A4F",
+    barColor: "linear-gradient(90deg, #2D6A4F, #B7DEC8)",
   },
   {
     n: "04",
     title: "Grade A Handpicked Only",
     desc: "Every mango individually selected for size, colour, and ripeness at peak season. No seconds, no shortcuts, ever.",
-    border: "#B7DEC8",
-    numColor: "#2D6A4F",
-    barColor: "linear-gradient(90deg, #2D6A4F, #B7DEC8)",
-    bg: "#FFFFFF",
+    border: "#F7C873",
+    numColor: "#C9973E",
+    barColor: "linear-gradient(90deg, #C9973E, #F7C873)",
   },
   {
     n: "05",
     title: "2–4 Day Door Delivery",
     desc: "Confirmed and shipped via overnight or 2-day air freight. Your family gets fresh Indian mangoes within days of harvest.",
-    border: "#F7C873",
-    numColor: "#F4A300",
-    barColor: "linear-gradient(90deg, #F4A300, #C9973E)",
-    bg: "#FFFFFF",
+    border: "#B7DEC8",
+    numColor: "#2D6A4F",
+    barColor: "linear-gradient(90deg, #2D6A4F, #B7DEC8)",
   },
   {
     n: "06",
     title: "1000+ Happy Families",
     desc: "Indian-American families across 10+ US states trust MangoRoots every season. Repeat customers are our biggest pride.",
-    border: "#B7DEC8",
-    numColor: "#2D6A4F",
-    barColor: "linear-gradient(90deg, #2D6A4F, #B7DEC8)",
-    bg: "#FFFFFF",
+    border: "#F7C873",
+    numColor: "#C9973E",
+    barColor: "linear-gradient(90deg, #C9973E, #F7C873)",
   },
 ];
 
@@ -74,30 +68,23 @@ export function WhyChooseUs() {
     <section
       id="why-us"
       className="sec"
-      style={{
-        background: "#FFFDF7",
-        borderTop: "1px solid #F0EDE6",
-      }}
+      style={{ background: "#FFFFFF", borderTop: "1px solid #F0F0F0" }}
     >
       <div className="page-wrap">
 
-        {/* Header */}
+        {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: EASE }}
-          className="mb-14"
+          className="mb-12"
         >
           <span className="sec-num">02 — Why MangoRoots</span>
-          <span className="sec-label block mt-1">Our Commitment to You</span>
-          <h2 className="sec-heading mt-2 mb-4">
-            Real Indian Mangoes.{" "}
-            <span style={{ color: "#2D6A4F" }}>No Compromise.</span>
-          </h2>
+          <span className="sec-label block mt-1">Our Commitment to Quality</span>
+          <h2 className="sec-heading mt-2 mb-4">What Makes Us Different</h2>
           <p className="sec-body max-w-xl mt-5">
-            We do one thing and we do it well — authentic Indian mangoes, fresh to your
-            USA door, every single season.
+            We do one thing and we do it well — authentic Indian mangoes, fresh to your USA door.
           </p>
         </motion.div>
 
@@ -115,66 +102,37 @@ export function WhyChooseUs() {
                 whileHover={{ y: -6 }}
                 className="relative cursor-default flex flex-col overflow-hidden"
                 style={{
-                  borderRadius: "20px",
+                  borderRadius: "18px",
                   border: `1.5px solid ${f.border}`,
-                  background: f.bg,
-                  padding: "2rem 2rem 2.25rem",
+                  background: "#FFFFFF",
+                  padding: "1.75rem 1.75rem 2rem",
                   boxShadow: "0 2px 16px rgba(0,0,0,0.04)",
                   transition: "box-shadow 0.35s ease",
                 }}
               >
-                {/* Large italic number watermark — decorative only */}
+                {/* Large faint italic number — top-left watermark, decorative only */}
                 <span
-                  className="absolute top-2 right-4 select-none pointer-events-none"
+                  className="select-none pointer-events-none block mb-3"
                   style={{
                     fontFamily: "var(--font-cormorant)",
                     fontStyle: "italic",
-                    fontSize: "5rem",
+                    fontSize: "2.25rem",
                     fontWeight: 700,
                     color: f.numColor,
-                    opacity: 0.09,
+                    opacity: 0.35,
                     lineHeight: 1,
                   }}
                 >
                   {f.n}
                 </span>
 
-                {/* Numbered dot */}
-                <div className="flex items-center gap-2.5 mb-5">
-                  <div
-                    style={{
-                      width: "28px",
-                      height: "28px",
-                      borderRadius: "8px",
-                      background: f.numColor === "#F4A300" ? "#FFF8EC" : "#E9F5EC",
-                      border: `1.5px solid ${f.border}`,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: "var(--font-poppins)",
-                        fontSize: "0.65rem",
-                        fontWeight: 700,
-                        color: f.numColor,
-                        letterSpacing: "0.02em",
-                      }}
-                    >
-                      {f.n}
-                    </span>
-                  </div>
-                </div>
-
                 {/* Title */}
                 <h3
-                  className="font-bold mb-3"
+                  className="font-semibold mb-2"
                   style={{
                     fontFamily: "var(--font-poppins)",
-                    fontSize: "0.95rem",
-                    color: "#1A1A1A",
+                    fontSize: "0.92rem",
+                    color: "#111111",
                     lineHeight: 1.3,
                   }}
                 >
@@ -184,7 +142,7 @@ export function WhyChooseUs() {
                 {/* Description */}
                 <p
                   className="flex-1"
-                  style={{ fontSize: "0.85rem", lineHeight: 1.75, color: "#4A4A4A" }}
+                  style={{ fontSize: "0.85rem", lineHeight: 1.7, color: "#555555" }}
                 >
                   {f.desc}
                 </p>
