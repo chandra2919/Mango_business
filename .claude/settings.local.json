@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit -m 'feat: premium warm redesign — TrustStats, WhyChooseUs, FinalCTA, globals *)",
+      "Bash(git commit -m 'refactor: replace all emojis with pure CSS geometric shapes *)",
+      "Bash(ls -la \"C:\\\\Users\\\\KANNA\\\\Downloads\\\\mango business\\\\\" | head -20)",
+      "Bash(git commit -m ' *)",
+      "Bash(git tag *)",
+      "Bash(git reset *)"
+    ]
+  }
+}

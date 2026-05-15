@@ -86,9 +86,9 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-        display: ["var(--font-poppins)", "system-ui", "sans-serif"],
-        manrope: ["var(--font-manrope)", "system-ui", "sans-serif"],
+        sans:    ["var(--font-inter)",    "system-ui", "sans-serif"],
+        display: ["var(--font-poppins)",  "system-ui", "sans-serif"],
+        serif:   ["var(--font-cormorant)","Georgia",   "serif"],
       },
       keyframes: {
         "accordion-down": {
