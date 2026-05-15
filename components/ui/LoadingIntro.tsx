@@ -38,39 +38,6 @@ function MangoMark({ size = 64 }: { size?: number }) {
   );
 }
 
-/* ── Small decorative dot grid — side/top/bottom faces ── */
-function DotGrid({ color }: { color: string }) {
-  return (
-    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-      {[8, 20, 32].map(x =>
-        [8, 20, 32].map(y => (
-          <circle key={`${x}-${y}`} cx={x} cy={y} r="2.5" fill={color} opacity="0.45" />
-        ))
-      )}
-    </svg>
-  );
-}
-
-/* ── Leaf silhouette — back face ─────────────────────── */
-function LeafMark() {
-  return (
-    <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
-      <path
-        d="M22 38 C22 38 6 28 6 16 C6 8 13 4 22 4 C31 4 38 8 38 16 C38 28 22 38 22 38 Z"
-        fill="#2D6A4F"
-        opacity="0.18"
-      />
-      <path
-        d="M22 38 C22 38 6 28 6 16 C6 8 13 4 22 4 C31 4 38 8 38 16 C38 28 22 38 22 38 Z"
-        stroke="#2D6A4F"
-        strokeWidth="1.5"
-        fill="none"
-        opacity="0.55"
-      />
-      <line x1="22" y1="38" x2="22" y2="8" stroke="#2D6A4F" strokeWidth="1" opacity="0.35" />
-    </svg>
-  );
-}
 
 export function LoadingIntro() {
   const [visible, setVisible] = useState(true);
@@ -114,45 +81,13 @@ export function LoadingIntro() {
           >
             <div className="intro-cube">
 
-              {/* FRONT — mango icon */}
-              <div className="intro-face front">
-                <MangoMark size={64} />
-              </div>
-
-              {/* BACK — leaf */}
-              <div className="intro-face back">
-                <LeafMark />
-              </div>
-
-              {/* RIGHT — gold dots */}
-              <div className="intro-face right">
-                <DotGrid color="#C9973E" />
-              </div>
-
-              {/* LEFT — green dots */}
-              <div className="intro-face left">
-                <DotGrid color="#15562B" />
-              </div>
-
-              {/* TOP — thin gold line */}
-              <div className="intro-face top">
-                <div style={{
-                  width: 36,
-                  height: 2,
-                  borderRadius: 2,
-                  background: "linear-gradient(90deg, #F4A300, #C9973E)",
-                }} />
-              </div>
-
-              {/* BOTTOM — thin green line */}
-              <div className="intro-face bottom">
-                <div style={{
-                  width: 36,
-                  height: 2,
-                  borderRadius: 2,
-                  background: "linear-gradient(90deg, #2D6A4F, #15562B)",
-                }} />
-              </div>
+              {/* All 6 faces — mango icon on every side */}
+              <div className="intro-face front">  <MangoMark size={64} /></div>
+              <div className="intro-face back">   <MangoMark size={64} /></div>
+              <div className="intro-face right">  <MangoMark size={64} /></div>
+              <div className="intro-face left">   <MangoMark size={64} /></div>
+              <div className="intro-face top">    <MangoMark size={64} /></div>
+              <div className="intro-face bottom"> <MangoMark size={64} /></div>
 
             </div>
           </motion.div>
