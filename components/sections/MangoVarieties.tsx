@@ -29,13 +29,8 @@ const tops: Record<string, { border: string }> = {
   mallika:      { border: "#BBF7D0"  },
 };
 
-/* Scroll direction: left / center / right based on grid column */
-const scrollDir = (i: number) => {
-  const col = i % 3;
-  if (col === 0) return { x: -70, y: 0  };  // from left
-  if (col === 2) return { x:  70, y: 0  };  // from right
-  return              { x:   0, y: 40  };   // from bottom
-};
+/* Scroll direction: always from bottom (safe for all grid sizes / mobile) */
+const scrollDir = (_i: number) => ({ x: 0, y: 40 });
 
 function MangoCard({ mango, index }: { mango: MangoVariety; index: number }) {
   const top      = tops[mango.id] ?? tops.banginapalli;

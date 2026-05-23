@@ -265,8 +265,8 @@ export function ChatWidget() {
             transition={{ duration: 0.28, ease: EASE }}
             className="fixed bottom-20 right-3 sm:bottom-24 sm:right-5 z-50 flex flex-col"
             style={{
-              width: "clamp(300px, 92vw, 380px)",
-              height: "clamp(380px, 75vh, 520px)",
+              width: "clamp(280px, calc(100vw - 24px), 380px)",
+              height: "clamp(360px, 72vh, 520px)",
               borderRadius: "22px",
               background: "#FFFDF7",
               border: "1.5px solid #F7C873",

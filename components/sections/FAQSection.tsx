@@ -65,7 +65,7 @@ export function FAQSection() {
   return (
     <section id="faq" className="sec" style={{ background: "#FFFFFF", borderTop: "1px solid #F0F0F0" }}>
       <div className="page-wrap">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-14">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-14">
 
           {/* Left — sticky sidebar */}
           <div className="lg:sticky lg:top-24 lg:self-start">

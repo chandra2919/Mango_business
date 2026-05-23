@@ -394,6 +394,14 @@
   transform: scale(0.94);   /* zoom OUT on hover — clear, dramatic pull-back */
 }
 
+/* ── Touch / mobile: disable slide transforms ────────── */
+/* On touch devices hover never fires — reset ms1/ms2 to neutral */
+@media (hover: none) {
+  .mango-slide-card .ms1 { transform: translateY(0) !important; }
+  .mango-slide-card .ms2 { transform: translateY(0) !important; box-shadow: none !important; }
+  .mango-slide-card .mango-card-img { transform: scale(1) !important; }
+}
+
 /* ── Scroll-from-side image reveal ──────────────────── */
 /* Applied via Framer Motion in component (x: ±60 → 0)  */
 

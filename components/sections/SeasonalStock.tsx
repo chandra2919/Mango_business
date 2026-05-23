@@ -61,7 +61,7 @@ export function SeasonalStock() {
 
       {/* ── Content ──────────────────────────────────────────── */}
       <div className="relative sec page-wrap" style={{ zIndex: 10 }}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 items-center">
 
           {/* ── Left — text ──────────────────────────────────── */}
           <motion.div
@@ -185,7 +185,7 @@ export function SeasonalStock() {
             transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
           >
             <div
-              className="rounded-2xl p-10 cursor-default"
+              className="rounded-2xl p-5 sm:p-8 lg:p-10 cursor-default"
               style={{
                 background: "rgba(255,255,255,0.07)",
                 backdropFilter: "blur(20px)",

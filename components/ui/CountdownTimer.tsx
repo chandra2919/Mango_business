@@ -41,13 +41,13 @@ export function CountdownTimer() {
   ];
 
   return (
-    <div className="flex items-end gap-3">
+    <div className="flex items-end gap-1.5 sm:gap-3">
       {units.map(({ label, value }, i) => (
-        <div key={label} className="flex items-end gap-3">
+        <div key={label} className="flex items-end gap-1.5 sm:gap-3">
           <div className="flex flex-col items-center">
             {/* Frosted glass digit box — visible on dark video bg */}
             <div
-              className="w-16 h-16 rounded-lg flex items-center justify-center"
+              className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg flex items-center justify-center"
               style={{
                 background: "rgba(255,255,255,0.10)",
                 backdropFilter: "blur(12px)",
@@ -57,7 +57,7 @@ export function CountdownTimer() {
               }}
             >
               <span
-                className="text-2xl font-bold tabular-nums"
+                className="text-lg sm:text-2xl font-bold tabular-nums"
                 style={{
                   fontFamily: "var(--font-poppins)",
                   color: "#FFFFFF",
@@ -69,8 +69,8 @@ export function CountdownTimer() {
             </div>
             {/* Gold label underneath */}
             <span
-              className="text-xs mt-2 font-semibold uppercase tracking-widest"
-              style={{ color: "#C9973E" }}
+              className="text-xs mt-1.5 sm:mt-2 font-semibold uppercase tracking-wider sm:tracking-widest"
+              style={{ color: "#C9973E", fontSize: "0.62rem" }}
             >
               {label}
             </span>
@@ -78,7 +78,7 @@ export function CountdownTimer() {
           {/* Colon separator */}
           {i < units.length - 1 && (
             <span
-              className="text-xl font-bold mb-6"
+              className="text-base sm:text-xl font-bold mb-5 sm:mb-6"
               style={{ color: "rgba(232,200,122,0.60)" }}
             >
               :

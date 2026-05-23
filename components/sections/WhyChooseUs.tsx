@@ -56,13 +56,8 @@ const features = [
   },
 ];
 
-/* Scroll entry: left col ← left, center ↑ bottom, right col → right */
-const entryDir = (i: number) => {
-  const col = i % 3;
-  if (col === 0) return { x: -50, y: 0 };
-  if (col === 2) return { x:  50, y: 0 };
-  return             { x:   0, y: 35 };
-};
+/* Scroll entry: always from bottom (safe for all grid sizes / mobile) */
+const entryDir = (_i: number) => ({ x: 0, y: 35 });
 
 export function WhyChooseUs() {
   return (

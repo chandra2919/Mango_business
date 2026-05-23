@@ -116,13 +116,15 @@ export function HeroSection() {
           color: "#7A5A1E",
         }}
       >
-        🌟&nbsp; Fresh Season Stock Now Available &nbsp;·&nbsp; May – August 2025 &nbsp;·&nbsp; Limited Weekly Quantities
+        🌟&nbsp; Fresh Season Stock Now Available
+        <span className="hidden sm:inline">&nbsp;·&nbsp; May – August 2025 &nbsp;·&nbsp; Limited Weekly Quantities</span>
+        <span className="sm:hidden">&nbsp;·&nbsp; Limited Quantities</span>
       </motion.div>
 
       {/* ── Full-width carousel ─────────────────────────── */}
       <div
         className="relative w-full overflow-hidden select-none"
-        style={{ height: "clamp(300px, 52vw, 600px)" }}
+        style={{ height: "clamp(480px, 70vw, 620px)" }}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
@@ -152,8 +154,13 @@ export function HeroSection() {
               className="absolute inset-0"
               style={{
                 background:
-                  "linear-gradient(110deg, rgba(10,30,15,0.80) 0%, rgba(10,30,15,0.58) 42%, rgba(10,30,15,0.18) 75%, transparent 100%)",
+                  "linear-gradient(110deg, rgba(10,30,15,0.88) 0%, rgba(10,30,15,0.72) 40%, rgba(10,30,15,0.40) 70%, rgba(10,30,15,0.15) 100%)",
               }}
+            />
+            {/* Extra mobile overlay — ensures text stays legible on narrow screens */}
+            <div
+              className="absolute inset-0 sm:hidden"
+              style={{ background: "rgba(10,30,15,0.30)" }}
             />
           </motion.div>
         </AnimatePresence>
@@ -223,7 +230,7 @@ export function HeroSection() {
                       lineHeight: 1.7,
                       color: "rgba(255,255,255,0.80)",
                       marginBottom: "2rem",
-                      maxWidth: "420px",
+                      maxWidth: "min(420px, 100%)",
                     }}
                   >
                     {slide.body}
